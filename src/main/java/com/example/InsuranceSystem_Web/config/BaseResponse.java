@@ -16,7 +16,6 @@ import static com.example.InsuranceSystem_Web.config.BaseResponseStatus.SUCCESS;
 @JsonPropertyOrder({"code", "httpStatus", "message", "result"})
 public class BaseResponse<T> {
 
-    private LocalDateTime timeStamp;
     private final int code;
     private final HttpStatus httpStatus;
     private final String message;
@@ -34,7 +33,6 @@ public class BaseResponse<T> {
 
     // 요청 실패
     public BaseResponse(int code, HttpStatus httpStatus, String message){
-        this.timeStamp = LocalDateTime.now();
         this.code = code;
         this.httpStatus = httpStatus;
         this.message = message;
