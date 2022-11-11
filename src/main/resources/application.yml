@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: demo
+
+  datasource:
+    url: jdbc:mysql://boonsan-db.czwxpqbngp21.ap-northeast-1.rds.amazonaws.com/boonsan_db?autoReconnect=true # 변경해주세요
+    username: admin # 변경해주세요
+    password: admin123 # 변경해주세요
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
+  sql:
+    init:
+      platform: mysql
