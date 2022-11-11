@@ -1,98 +1,42 @@
 package com.example.InsuranceSystem_Web.Domain.Insurance;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
+//@Entity
 public abstract class Insurance {
 
-  public enum Type{
-    Fire,
-    Car,
-    Sea;
-  }
+//    /**
+//     * Insurance IDX
+//     */
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-  private int id;
-  private String name;
-  private String explanation;
-  private int premium;
-  public boolean authorization;
-  private Date authorizationDate;
-  private Date createdDate;
-  private Date modifiedDate;
-  private Type type;
+    private String name;
+    private String explanation;
+    private int premium;
+    public boolean authorization;
+    private Date authorizationDate;
+    private Date createdDate;
+    private Date modifiedDate;
 
-  public Insurance() {
+//    @Enumerated(EnumType.ORDINAL) // 숫자
+    private Type type;
 
-  }
+    public enum Type {
+        Fire,
+        Car,
+        Sea;
+    }
 
-  public Type getType() {
-    return type;
-  }
+    public Insurance() {
 
-  public void setType(Type type) {
-    this.type = type;
-  }
+    }
 
-  public Date getAuthorizedDate() {
-    return authorizationDate;
-  }
-
-  public void setAuthorizedDate(Date authorizationDate) {
-    this.authorizationDate = authorizationDate;
-  }
-
-  public Date getCreatedDate() {
-    return createdDate;
-  }
-
-  public void setCreatedDate(Date createdDate) {
-    this.createdDate = createdDate;
-  }
-
-  public String getExplanation() {
-    return explanation;
-  }
-
-  public void setExplanation(String explanation) {
-    this.explanation = explanation;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public Date getModifiedDate() {
-    return modifiedDate;
-  }
-
-  public void setModifiedDate(Date modifiedDate) {
-    this.modifiedDate = modifiedDate;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getPremium() {
-    return premium;
-  }
-
-  public void setPremium(int premium) {
-    this.premium = premium;
-  }
-
-
-  public boolean isAuthorization() {
-    return authorization;
-  }
-
-  public void setAuthorization(boolean authorization) {
-    this.authorization = authorization;
-  }
 }

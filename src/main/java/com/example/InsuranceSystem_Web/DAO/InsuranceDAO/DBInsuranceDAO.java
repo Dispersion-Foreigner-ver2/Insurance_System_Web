@@ -45,7 +45,7 @@ public class DBInsuranceDAO extends DBConnectorDAO implements InsuranceDAO {
         if (insurance != null) {
           insurance.setId(rs.getInt("id"));
           insurance.setAuthorization(rs.getBoolean("authorization"));
-          insurance.setAuthorizedDate(rs.getDate("authorizedDate"));
+          insurance.setAuthorizationDate(rs.getDate("authorizedDate"));
           insurance.setCreatedDate(rs.getDate("createdDate"));
           insurance.setExplanation(rs.getString("explanation"));
           insurance.setModifiedDate(rs.getDate("modifiedDate"));
@@ -113,7 +113,7 @@ public class DBInsuranceDAO extends DBConnectorDAO implements InsuranceDAO {
   @Override
   public boolean update(Insurance insurance) {
     String query = "UPDATE insurance set authorization = "
-            + insurance.isAuthorization() + ", authorizedDate = '" + insurance.getAuthorizedDate()
+            + insurance.isAuthorization() + ", authorizedDate = '" + insurance.getAuthorizationDate()
             + "', createdDate = '" + insurance.getCreatedDate() + "', explanation = '" + insurance.getExplanation()
             + "', modifiedDate = '" + insurance.getModifiedDate() + "', name = '"
             + insurance.getName() + "', premium = " + insurance.getPremium() + ", type = '" + insurance.getType()
