@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/insurance")
 @Api(tags ="1. insurance API ")
 public class InsuranceController {
 
-//    private final InsuranceService insuranceService;
+    private final InsuranceService insuranceService;
 
     /**
      * 보험을 설계한다.
@@ -31,14 +33,8 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceResponse.class)
     })
     @PostMapping("/design")
-    public ResponseEntity<?> createInsurance(@RequestBody PostInsuranceRequest postInsuranceRequest){
-
-        if(postInsuranceRequest.getType() == 3) throw new InputErrorException();
-
-//        return ResponseEntity
-//                .ok(PostInsuranceResponse.builder()
-//                .message("성공").build());
-
+    public ResponseEntity<?> createInsurance(@Valid @RequestBody PostInsuranceRequest postInsuranceRequest){
+        insuranceService.design(postInsuranceRequest);
         return ResponseEntity
                 .ok(new BaseResponse(PostInsuranceResponse.builder().message("성공").build()));
     }
