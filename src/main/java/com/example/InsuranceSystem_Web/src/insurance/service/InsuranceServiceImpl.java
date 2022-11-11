@@ -1,14 +1,9 @@
-package com.example.InsuranceSystem_Web.src.Controller.InsuranceService;
+package com.example.InsuranceSystem_Web.src.insurance.service;
 
-import com.example.InsuranceSystem_Web.src.Controller.InsuranceService.dto.PostInsuranceRequest;
-import com.example.InsuranceSystem_Web.src.DAO.InsuranceDAO.*;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.*;
+import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceRequest;
+import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Service
 @Slf4j

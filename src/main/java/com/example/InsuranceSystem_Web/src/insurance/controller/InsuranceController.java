@@ -1,9 +1,9 @@
-package com.example.InsuranceSystem_Web.src.Controller.InsuranceService;
+package com.example.InsuranceSystem_Web.src.insurance.controller;
 
-import com.example.InsuranceSystem_Web.src.Controller.InsuranceService.Exception.InputErrorException;
-import com.example.InsuranceSystem_Web.src.Controller.InsuranceService.dto.PostInsuranceRequest;
-import com.example.InsuranceSystem_Web.src.Controller.InsuranceService.dto.PostInsuranceResponse;
+import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceRequest;
+import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceResponse;
 import com.example.InsuranceSystem_Web.config.BaseResponse;
+import com.example.InsuranceSystem_Web.src.insurance.service.InsuranceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

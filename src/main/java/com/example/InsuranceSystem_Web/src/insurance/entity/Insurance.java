@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.Domain.Insurance;
+package com.example.InsuranceSystem_Web.src.insurance.entity;
 
 import lombok.Getter;
 import lombok.Setter;

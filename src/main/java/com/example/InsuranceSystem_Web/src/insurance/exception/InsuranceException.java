@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.Controller.InsuranceService.Exception;
+package com.example.InsuranceSystem_Web.src.insurance.exception;
 
 import com.example.InsuranceSystem_Web.config.BaseException;
 import org.springframework.http.HttpStatus;

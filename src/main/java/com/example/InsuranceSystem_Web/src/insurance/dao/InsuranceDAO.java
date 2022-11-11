@@ -1,6 +1,6 @@
-package com.example.InsuranceSystem_Web.src.DAO.InsuranceDAO;
+package com.example.InsuranceSystem_Web.src.insurance.dao;
 
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
 
 import java.util.ArrayList;
 

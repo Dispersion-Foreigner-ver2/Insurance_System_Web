@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.Controller.InsuranceService.dto;
+package com.example.InsuranceSystem_Web.src.insurance.dto;
 
 import lombok.Builder;
 import lombok.Getter;

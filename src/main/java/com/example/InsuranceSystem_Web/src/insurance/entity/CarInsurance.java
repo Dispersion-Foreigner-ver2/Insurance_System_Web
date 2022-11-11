@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.Domain.Insurance;
+package com.example.InsuranceSystem_Web.src.insurance.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 //@Entity
-public class FireInsurance extends Insurance{
+public class CarInsurance extends Insurance {
 
 //  /**
 //   * CarInsurance IDX
@@ -15,10 +15,9 @@ public class FireInsurance extends Insurance{
 //  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  private int surroundingDamageBasicMoney;
   private int humanDamageBasicMoney;
-  private int buildingDamageBasicMoney;
-//
+  private int carDamageBasicMoney;
+
 //  @OneToOne
 //  @JoinColumn(name = "Insurance_ID")
 //  private Insurance insurance;

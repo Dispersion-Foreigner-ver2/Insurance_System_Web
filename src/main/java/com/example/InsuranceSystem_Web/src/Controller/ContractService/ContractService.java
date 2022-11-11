@@ -2,13 +2,13 @@ package com.example.InsuranceSystem_Web.src.Controller.ContractService;
 
 import com.example.InsuranceSystem_Web.src.DAO.ContractDAO.ContractDAO;
 import com.example.InsuranceSystem_Web.src.DAO.CustomerDAO.CustomerDAO;
-import com.example.InsuranceSystem_Web.src.DAO.InsuranceDAO.InsuranceDAO;
+import com.example.InsuranceSystem_Web.src.insurance.dao.InsuranceDAO;
 import com.example.InsuranceSystem_Web.src.Domain.Contract.Contract;
 import com.example.InsuranceSystem_Web.src.Domain.Customer.Customer;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.CarInsurance;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.FireInsurance;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.Insurance;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.SeaInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.CarInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.FireInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.SeaInsurance;
 
 //import javax.mail.*;
 //import javax.mail.internet.InternetAddress;

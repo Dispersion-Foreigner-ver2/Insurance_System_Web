@@ -1,7 +1,7 @@
-package com.example.InsuranceSystem_Web.src.DAO.InsuranceDAO;
+package com.example.InsuranceSystem_Web.src.insurance.dao;
 
 import com.example.InsuranceSystem_Web.src.DAO.DBConnector.DBConnectorDAO;
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.CarInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.CarInsurance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

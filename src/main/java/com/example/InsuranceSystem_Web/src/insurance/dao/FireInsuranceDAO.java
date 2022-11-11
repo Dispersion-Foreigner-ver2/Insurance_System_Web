@@ -1,6 +1,6 @@
-package com.example.InsuranceSystem_Web.src.DAO.InsuranceDAO;
+package com.example.InsuranceSystem_Web.src.insurance.dao;
 
-import com.example.InsuranceSystem_Web.src.Domain.Insurance.FireInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.FireInsurance;
 
 public interface FireInsuranceDAO {
   public boolean add(FireInsurance insurance);
