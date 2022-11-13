@@ -10,14 +10,10 @@ import com.example.InsuranceSystem_Web.Domain.Insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.Domain.Insurance.Insurance;
 import com.example.InsuranceSystem_Web.Domain.Insurance.SeaInsurance;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Properties;
 
 public class ContractService {
     private ContractDAO contractDAO;
@@ -131,58 +127,58 @@ public class ContractService {
     }
 
 
-    public boolean payCustomer(ArrayList<Customer> unpaidCustomerList) {
-        if (verifyEmail(unpaidCustomerList)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean payCustomer(ArrayList<Customer> unpaidCustomerList) {
+//        if (verifyEmail(unpaidCustomerList)) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
-    private boolean verifyEmail(ArrayList<Customer> unpaidCustomerList) {
-        boolean result = false;
-
-        Properties p = System.getProperties();
-        p.put("mail.smtp.starttls.enable", "true");
-        p.put("mail.smtp.host", "smtp.naver.com");
-        p.put("mail.smtp.auth", "true");
-        p.put("mail.smtp.port", "587");
-
-        Authenticator auth = new MyAuthentication();
-        Session session = Session.getDefaultInstance(p, auth);
-        MimeMessage message = new MimeMessage(session);
-
-        // Compose the message
-        try {
-            message.setSentDate(new Date());
-            InternetAddress from = new InternetAddress();
-
-            from = new InternetAddress("Foreigners<hakgooyeol@naver.com>");
-            message.setFrom(from);
-
-            for (Customer customer : unpaidCustomerList) {
-                for (Contract contract : this.contractDAO.getContractList()) {
-                    if (contract.getCustomerId() == customer.getId() && contract.isUnderWrite() && !contract.isPay()) {
-                        message.setRecipient(Message.RecipientType.TO, new InternetAddress(customer.getEmail()));
-                        message.setSubject("[전과자들]"+this.insuranceDAO.get(contract.getInsuranceId()).getName()+" 보험 보험료 체납 안내", "UTF-8");
-                        message.setText("안녕하세요 전과자들입니다.\n" +
-                                "고객님이 가입하신 "+this.insuranceDAO.get(contract.getInsuranceId()).getName()+
-                                " 보험의 보험료 "+ contract.getInsurancePrice() +" 원이 정상적으로 입금되지 않았습니다.\n" +
-                                "확인 후 입금 부탁드립니다.\n" +
-                                "갑사합니다.", "UTF-8");
-                        Transport.send(message);
-
-                        contract.setPay(true);
-                        this.contractDAO.update(contract);
-                    }
-                }
-            }
-            result = true;
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    private boolean verifyEmail(ArrayList<Customer> unpaidCustomerList) {
+//        boolean result = false;
+//
+//        Properties p = System.getProperties();
+//        p.put("mail.smtp.starttls.enable", "true");
+//        p.put("mail.smtp.host", "smtp.naver.com");
+//        p.put("mail.smtp.auth", "true");
+//        p.put("mail.smtp.port", "587");
+//
+//        Authenticator auth = new MyAuthentication();
+//        Session session = Session.getDefaultInstance(p, auth);
+//        MimeMessage message = new MimeMessage(session);
+//
+//        // Compose the message
+//        try {
+//            message.setSentDate(new Date());
+//            InternetAddress from = new InternetAddress();
+//
+//            from = new InternetAddress("Foreigners<hakgooyeol@naver.com>");
+//            message.setFrom(from);
+//
+//            for (Customer customer : unpaidCustomerList) {
+//                for (Contract contract : this.contractDAO.getContractList()) {
+//                    if (contract.getCustomerId() == customer.getId() && contract.isUnderWrite() && !contract.isPay()) {
+//                        message.setRecipient(Message.RecipientType.TO, new InternetAddress(customer.getEmail()));
+//                        message.setSubject("[전과자들]"+this.insuranceDAO.get(contract.getInsuranceId()).getName()+" 보험 보험료 체납 안내", "UTF-8");
+//                        message.setText("안녕하세요 전과자들입니다.\n" +
+//                                "고객님이 가입하신 "+this.insuranceDAO.get(contract.getInsuranceId()).getName()+
+//                                " 보험의 보험료 "+ contract.getInsurancePrice() +" 원이 정상적으로 입금되지 않았습니다.\n" +
+//                                "확인 후 입금 부탁드립니다.\n" +
+//                                "갑사합니다.", "UTF-8");
+//                        Transport.send(message);
+//
+//                        contract.setPay(true);
+//                        this.contractDAO.update(contract);
+//                    }
+//                }
+//            }
+//            result = true;
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     //보험마다 계약한 고객 수
     public int countContractCustomer(int insuranceId) {
