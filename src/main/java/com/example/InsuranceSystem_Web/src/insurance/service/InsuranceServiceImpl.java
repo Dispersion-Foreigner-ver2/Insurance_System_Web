@@ -4,7 +4,6 @@ import com.example.InsuranceSystem_Web.src.insurance.dao.*;
 import com.example.InsuranceSystem_Web.src.insurance.dto.*;
 import com.example.InsuranceSystem_Web.src.insurance.entity.*;
 import com.example.InsuranceSystem_Web.src.insurance.vo.PostInsuranceRes;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,21 +20,21 @@ public class InsuranceServiceImpl implements InsuranceService{
 
     @Override
     public PostInsuranceRes createInsuranceCar(PostCarReq postCarRequest) {
-        Insurance insurance = insuraceDao.save(postCarRequest.toInsuranceEntity(Insurance.Type.Car));
+        Insurance insurance = insuraceDao.save(postCarRequest.of(Insurance.Type.Car));
         CarInsurance carInsurance = carInsuraceDao.save(postCarRequest.toEntity(insurance));
         return response(insurance, "자동차");
     }
 
     @Override
     public PostInsuranceRes createInsuranceFire(PostFireReq postFireRequest) {
-        Insurance insurance = insuraceDao.save(postFireRequest.toInsuranceEntity(Insurance.Type.Fire));
+        Insurance insurance = insuraceDao.save(postFireRequest.of(Insurance.Type.Fire));
         FireInsurance fireInsurance = fireInsuraceDao.save(postFireRequest.toEntity(insurance));
         return response(insurance, "화재");
     }
 
     @Override
     public PostInsuranceRes createInsuranceSea(PostSeaReq postSeaRequest) {
-        Insurance insurance = insuraceDao.save(postSeaRequest.toInsuranceEntity(Insurance.Type.Sea));
+        Insurance insurance = insuraceDao.save(postSeaRequest.of(Insurance.Type.Sea));
         SeaInsurance seaInsurance = seaInsuraceDao.save(postSeaRequest.toEntity(insurance));
         return response(insurance, "해상");
     }

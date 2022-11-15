@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -30,16 +29,8 @@ public class PostCarReq {
     @NotNull
     private int carDamageBasicMoney;
 
-    public Insurance toInsuranceEntity(Insurance.Type type){
-        return Insurance.builder()
-                .name(name)
-                .explanation(explanation)
-                .premium(premium)
-                .authorization(true)
-                .authorizationDate(LocalDateTime.now())
-                .createdDate(LocalDateTime.now())
-                .type(type)
-                .build();
+    public Insurance of(Insurance.Type type){
+        return Insurance.of(name, explanation,premium,type);
     }
 
     public CarInsurance toEntity(Insurance insurance){

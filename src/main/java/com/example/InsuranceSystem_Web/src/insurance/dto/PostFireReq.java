@@ -1,6 +1,5 @@
 package com.example.InsuranceSystem_Web.src.insurance.dto;
 
-import com.example.InsuranceSystem_Web.src.insurance.entity.CarInsurance;
 import com.example.InsuranceSystem_Web.src.insurance.entity.FireInsurance;
 import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -35,16 +33,8 @@ public class PostFireReq {
     @NotNull
     private int buildingDamageBasicMoney;
 
-    public Insurance toInsuranceEntity(Insurance.Type type){
-        return Insurance.builder()
-                .name(name)
-                .explanation(explanation)
-                .premium(premium)
-                .authorization(true)
-                .authorizationDate(LocalDateTime.now())
-                .createdDate(LocalDateTime.now())
-                .type(type)
-                .build();
+    public Insurance of(Insurance.Type type){
+        return Insurance.of(name, explanation,premium,type);
     }
 
     public FireInsurance toEntity(Insurance insurance){

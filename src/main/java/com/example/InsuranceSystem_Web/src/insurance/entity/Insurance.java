@@ -52,6 +52,17 @@ public class Insurance {
         this.type = type;
     }
 
+    public static Insurance of(String name, String explanation, int premium, Type type ){
+        return Insurance.builder()
+                .name(name)
+                .explanation(explanation)
+                .premium(premium)
+                .authorization(true)
+                .authorizationDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
+                .type(type)
+                .build();
+    }
 
 
 }
