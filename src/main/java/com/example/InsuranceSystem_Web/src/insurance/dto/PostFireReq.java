@@ -3,11 +3,13 @@ package com.example.InsuranceSystem_Web.src.insurance.dto;
 import com.example.InsuranceSystem_Web.src.insurance.entity.CarInsurance;
 import com.example.InsuranceSystem_Web.src.insurance.entity.FireInsurance;
 import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,11 +18,13 @@ import java.time.LocalDateTime;
 public class PostFireReq {
 
     // Insuracne
-    @NotNull
+    @NotBlank(message = "보험이름이 공백입니다. 정확히 입력해주세요.")
+    @NotEmpty(message = "보험이름을 입력해주세요.")
     private String name;
-    @NotNull
+    @NotBlank
+    @NotEmpty(message = "explanation을 입력해주세요.")
     private String explanation;
-    @NotNull
+    @NotNull(message = "premium을 입력해주세요.")
     private int premium;
 
     // FireInsurance

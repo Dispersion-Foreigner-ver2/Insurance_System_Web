@@ -35,8 +35,8 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/car")
-    public ResponseEntity<?> createInsuranceCar(@Valid @RequestBody PostCarReq postCarRequest){
-        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarRequest)));
+    public ResponseEntity<?> createInsuranceCar(@Valid @RequestBody PostCarReq postCarReq){
+        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarReq)));
     }
 
     // 화재
