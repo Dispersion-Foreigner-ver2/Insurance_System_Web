@@ -1,0 +1,49 @@
+package com.example.InsuranceSystem_Web.src.insurance.dto;
+
+import com.example.InsuranceSystem_Web.src.insurance.entity.CarInsurance;
+import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Getter
+@NoArgsConstructor
+public class PostCarReq {
+
+    // Insuracne
+    @NotNull
+    private String name;
+    @NotNull
+    private String explanation;
+    @NotNull
+    private int premium;
+
+    // CarInsurance
+    @NotNull
+    private int humanDamageBasicMoney;
+    @NotNull
+    private int carDamageBasicMoney;
+
+    public Insurance toInsuranceEntity(Insurance.Type type){
+        return Insurance.builder()
+                .name(name)
+                .explanation(explanation)
+                .premium(premium)
+                .authorization(true)
+                .authorizationDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
+                .type(type)
+                .build();
+    }
+
+    public CarInsurance toEntity(Insurance insurance){
+        return CarInsurance.builder()
+                .humanDamageBasicMoney(humanDamageBasicMoney)
+                .carDamageBasicMoney(carDamageBasicMoney)
+                .insurance(insurance)
+                .build();
+    }
+
+}

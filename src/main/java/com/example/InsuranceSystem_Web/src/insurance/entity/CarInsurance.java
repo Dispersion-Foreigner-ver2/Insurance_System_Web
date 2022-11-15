@@ -1,25 +1,33 @@
 package com.example.InsuranceSystem_Web.src.insurance.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
-//@Entity
-public class CarInsurance extends Insurance {
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CarInsurance{
 
-//  /**
-//   * CarInsurance IDX
-//   */
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  /**
+   * CarInsurance IDX
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   private int humanDamageBasicMoney;
   private int carDamageBasicMoney;
 
-//  @OneToOne
-//  @JoinColumn(name = "Insurance_ID")
-//  private Insurance insurance;
+  @OneToOne
+  @JoinColumn(name = "Insurance_ID")
+  private Insurance insurance;
 
+  @Builder
+  public CarInsurance(int humanDamageBasicMoney, int carDamageBasicMoney, Insurance insurance) {
+    this.humanDamageBasicMoney = humanDamageBasicMoney;
+    this.carDamageBasicMoney = carDamageBasicMoney;
+    this.insurance = insurance;
+  }
 }

@@ -1,8 +1,11 @@
 package com.example.InsuranceSystem_Web.src.insurance.service;
 
-import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceRequest;
-import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
+import com.example.InsuranceSystem_Web.src.insurance.dto.*;
+import com.example.InsuranceSystem_Web.src.insurance.vo.PostInsuranceRes;
 
 public interface InsuranceService {
-    public Insurance design(PostInsuranceRequest postInsuranceRequest);
+
+    PostInsuranceRes createInsuranceCar(PostCarReq postCarRequest);
+    PostInsuranceRes createInsuranceFire(PostFireReq postFireRequest);
+    PostInsuranceRes createInsuranceSea(PostSeaReq postSeaRequest);
 }

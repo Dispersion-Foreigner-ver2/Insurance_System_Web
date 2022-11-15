@@ -1,18 +1,21 @@
 package com.example.InsuranceSystem_Web.src.insurance.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import com.example.InsuranceSystem_Web.src.insurance.entity.Insurance;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
-//@Entity
-public class SeaInsurance extends Insurance {
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SeaInsurance{
 
-//  /**
-//   * CarInsurance IDX
-//   */
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  /**
+   * CarInsurance IDX
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   /**
@@ -23,9 +26,15 @@ public class SeaInsurance extends Insurance {
    * 수익 손해 정도
    */
   private int revenueDamageBasicMoney;
-//
-//  @OneToOne
-//  @JoinColumn(name = "Insurance_ID")
-//  private Insurance insurance;
 
+  @OneToOne
+  @JoinColumn(name = "Insurance_ID")
+  private Insurance insurance;
+
+  @Builder
+  public SeaInsurance(int generalDamageBasicMoney,int revenueDamageBasicMoney,Insurance insurance){
+    this.generalDamageBasicMoney = generalDamageBasicMoney;
+    this.revenueDamageBasicMoney = revenueDamageBasicMoney;
+    this.insurance = insurance;
+  }
 }

@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.insurance.dao;
+package com.example.InsuranceSystem_Web.src.insurance.dao.delete;
 
 import com.example.InsuranceSystem_Web.src.insurance.entity.FireInsurance;
 

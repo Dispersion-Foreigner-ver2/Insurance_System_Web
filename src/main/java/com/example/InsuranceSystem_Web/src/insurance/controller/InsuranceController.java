@@ -1,9 +1,9 @@
 package com.example.InsuranceSystem_Web.src.insurance.controller;
 
-import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceRequest;
-import com.example.InsuranceSystem_Web.src.insurance.dto.PostInsuranceResponse;
 import com.example.InsuranceSystem_Web.config.BaseResponse;
+import com.example.InsuranceSystem_Web.src.insurance.dto.*;
 import com.example.InsuranceSystem_Web.src.insurance.service.InsuranceService;
+import com.example.InsuranceSystem_Web.src.insurance.vo.PostInsuranceRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,16 +28,37 @@ public class InsuranceController {
     /**
      * 보험을 설계한다.
      * */
-    @ApiOperation(value = "보험을 설계한다.")
-    @ApiResponses({  // Response Message 에 대한 Swagger 설명
-            @ApiResponse(code = 200, message = "OK", response = PostInsuranceResponse.class)
+
+    // 자동차
+    @ApiOperation(value = "자동차 보험을 설계한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
-    @PostMapping("/design")
-    public ResponseEntity<?> createInsurance(@Valid @RequestBody PostInsuranceRequest postInsuranceRequest){
-        insuranceService.design(postInsuranceRequest);
-        return ResponseEntity
-                .ok(new BaseResponse(PostInsuranceResponse.builder().message("성공").build()));
+    @PostMapping("/design/car")
+    public ResponseEntity<?> createInsuranceCar(@Valid @RequestBody PostCarReq postCarRequest){
+        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarRequest)));
     }
+
+    // 화재
+    @ApiOperation(value = "화재 보험을 설계한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
+    })
+    @PostMapping("/design/fire")
+    public ResponseEntity<?> createInsuranceFire(@Valid @RequestBody PostFireReq postFireRequest){
+        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceFire(postFireRequest)));
+    }
+
+    // 바다
+    @ApiOperation(value = "보험을 설계한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
+    })
+    @PostMapping("/design/sea")
+    public ResponseEntity<?> createInsuranceSea(@Valid @RequestBody PostSeaReq postSeaRequest){
+        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceSea(postSeaRequest)));
+    }
+
 
 
     /**
