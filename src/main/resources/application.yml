@@ -5,6 +5,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
   datasource:
     url: jdbc:mysql://boonsan-db.czwxpqbngp21.ap-northeast-1.rds.amazonaws.com/boonsan_db?autoReconnect=true # 변경해주세요
