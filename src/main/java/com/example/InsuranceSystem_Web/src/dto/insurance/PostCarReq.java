@@ -4,12 +4,13 @@ import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 public class PostCarReq {
 

@@ -6,31 +6,28 @@ import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
 public class PostSeaReq {
 
-    // Insuracne
     @NotBlank(message = "보험이름이 공백입니다. 정확히 입력해주세요.")
-    @NotEmpty(message = "보험이름을 입력해주세요.")
     private String name;
-    @NotBlank
-    @NotEmpty(message = "explanation을 입력해주세요.")
+    @NotBlank(message = "보험 설명을 입력해주세요.")
     private String explanation;
-    @NotNull(message = "premium을 입력해주세요.")
+    @NotNull(message = "보험료를 입력해주세요.")
     private int premium;
 
     // SealInsurance
-    @NotNull
+    @NotNull(message = "제반 손해 보상금을 입력해주세요.")
     private int generalDamageBasicMoney;
-    @NotNull
+    @NotNull(message = "수익 손해 보상금을 입력해주세요.")
     private int revenueDamageBasicMoney;
 
 
