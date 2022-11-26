@@ -1,9 +1,16 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Getter @Setter
 public class Customer {
+
 
 
 	public static enum Job {
@@ -30,25 +37,44 @@ public class Customer {
 		}
 	}
 
-
+	@Id
+	@Column(name = "customer_id")
 	private int id;
+
+	@Column(name = "customer_age")
 	private int age;
+	@Column(name = "customer_account")
 	private String account;
+	@Column(name = "customer_address")
 	private String address;
+	@Column(name = "customer_email")
 	private String email;
+	@Column(name = "customer_job")
 	private Job job;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "medicalHistory_id")
 	private MedicalHistory medicalHistory;
+	@Column(name = "customer_name")
 	private String name;
+	@Column(name = "customer_phoneNumber")
 	private String phoneNumber;
+	@Column(name = "customer_sex")
 	private boolean sex;
+	@Column(name = "customer_SSN")
 	private String SSN;
+	@Column(name = "customer_joinDate")
 	private Date joinDate;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "house_id")
 	private House house;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "car_id")
 	private Car car;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "car_id")
 	private Ship ship;
 
-	public Customer() {
-	}
 
 	public int getAge() {
 		return this.age;

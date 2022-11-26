@@ -2,12 +2,16 @@ package com.example.InsuranceSystem_Web.src.dao.customer;
 
 import com.example.InsuranceSystem_Web.src.dao.DBConnector.DBConnectorDAO;
 import com.example.InsuranceSystem_Web.src.entity.customer.*;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class DBCustomerDAO extends DBConnectorDAO implements CustomerDAO {
+
+
 
 	private MedicalHistoryDAO medicalHistoryDAO;
 	private CarDAO carDAO;

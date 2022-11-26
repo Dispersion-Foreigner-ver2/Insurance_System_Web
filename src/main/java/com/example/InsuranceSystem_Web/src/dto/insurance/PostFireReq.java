@@ -14,20 +14,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostFireReq {
 
-    // Insuracne
     @NotBlank(message = "보험이름이 공백입니다. 정확히 입력해주세요.")
     private String name;
-    @NotBlank(message = "explanation을 입력해주세요.")
+    @NotBlank(message = "보험 설명을 입력해주세요.")
     private String explanation;
-    @NotNull(message = "premium을 입력해주세요.")
+    @NotNull(message = "보험료를 입력해주세요.")
     private int premium;
 
-    // FireInsurance
-    @NotNull
+    @NotNull(message = "주변 피해 보상금을 입력해주세요.")
     private int surroundingDamageBasicMoney;
-    @NotNull
+    @NotNull(message = "인적 피해 보상금을 입력해주세요.")
     private int humanDamageBasicMoney;
-    @NotNull
+    @NotNull(message = "건물 피해 보상금을 입력해주세요.")
     private int buildingDamageBasicMoney;
 
 

@@ -1,10 +1,28 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@AllArgsConstructor
 public class MedicalHistory {
+
+	@Id
+	@Column(name="medicalHistory_id")
+	private Long id;
+	@OneToOne(mappedBy = "medicalHistory",fetch = FetchType.LAZY)
+	private Customer customer;
 	private boolean cureComplete;
 	private int historyYear;
 	private Disease MyDisease;
+
 	private int customer_id;
+
+
 
 	public int getCustomer_id() {
 		return this.customer_id;

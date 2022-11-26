@@ -1,7 +1,23 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Entity
+
+@Getter
+@AllArgsConstructor
 public class Car {
+
+  @Id
+  @Column(name = "car_id")
+  private Long id;
+
+  @OneToOne(mappedBy = "car",fetch = FetchType.LAZY)
+  private Customer customer;
   private int carNum;
   private int year;
   private int displacement;

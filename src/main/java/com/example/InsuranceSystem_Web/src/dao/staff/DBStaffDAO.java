@@ -4,6 +4,7 @@ import com.example.InsuranceSystem_Web.src.dao.DBConnector.DBConnectorDAO;
 import com.example.InsuranceSystem_Web.src.entity.staff.Department;
 import com.example.InsuranceSystem_Web.src.entity.staff.Position;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

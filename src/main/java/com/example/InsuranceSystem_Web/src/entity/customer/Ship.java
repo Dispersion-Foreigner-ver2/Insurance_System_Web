@@ -1,6 +1,19 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@AllArgsConstructor
 public class Ship {
+  @Id
+  @Column(name="ship_id")
+  private Long id;
+  @OneToOne(mappedBy = "ship",fetch = FetchType.LAZY)
+  private Customer customer;
   private int shipNum;
   private int year;
   private int price;

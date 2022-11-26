@@ -1,22 +1,29 @@
 package com.example.InsuranceSystem_Web.src.service.customer;
-
 import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDAO;
+import com.example.InsuranceSystem_Web.src.dto.customer.CustomerJoinForm;
+import com.example.InsuranceSystem_Web.src.dto.staff.StaffJoinForm;
 import com.example.InsuranceSystem_Web.src.entity.customer.*;
+import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
+import com.example.InsuranceSystem_Web.src.exception.customerException.CustomerException;
+import com.example.InsuranceSystem_Web.src.exception.customerException.CustomerExceptionType;
+import com.example.InsuranceSystem_Web.src.exception.staffException.StaffException;
+import com.example.InsuranceSystem_Web.src.exception.staffException.StaffExceptionType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CustomerService {
 
-    private CustomerDAO customerDAO;
-
-
-    public CustomerService(CustomerDAO customerDAO) {
-        this.customerDAO = customerDAO;
-    }
+    private final CustomerDAO customerDAO;
 
 
     public ArrayList<Customer> getTotalCustomer() {
@@ -66,10 +73,11 @@ public class CustomerService {
         }
     }
 
-
+@Transactional
     public Customer joinCustomer(String customerName, String customerSSN, String customerAddress, String customerPhoneNum, String customerEmail, String customerAccount, int customerAge, int customerSex, int customerJob, int customerDisease, int customerHistoryYear, int customerCureComplete) {
 
         Customer customer = new Customer();
+
         customer.setId(setCustomerId());
         customer.setName(customerName);
         customer.setSSN(customerSSN);
