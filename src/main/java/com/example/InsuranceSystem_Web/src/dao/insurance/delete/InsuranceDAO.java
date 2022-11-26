@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.src.dao.insurance.delete;
 
-import com.example.InsuranceSystem_Web.src.entity.Insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 
 
 import java.util.ArrayList;

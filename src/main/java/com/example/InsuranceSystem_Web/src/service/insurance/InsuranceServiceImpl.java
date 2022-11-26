@@ -1,17 +1,11 @@
 package com.example.InsuranceSystem_Web.src.service.insurance;
 
-import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceRes;
-import com.example.InsuranceSystem_Web.src.dao.insurance.CarInsuraceDao;
-import com.example.InsuranceSystem_Web.src.dao.insurance.FireInsuraceDao;
-import com.example.InsuranceSystem_Web.src.dao.insurance.InsuraceDao;
-import com.example.InsuranceSystem_Web.src.dao.insurance.SeaInsuraceDao;
+import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarReq;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireReq;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaReq;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.CarInsurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.FireInsurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.Insurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.SeaInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,38 +15,31 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InsuranceServiceImpl implements InsuranceService{
 
-    private final InsuraceDao insuraceDao;
-    private final CarInsuraceDao carInsuraceDao;
-    private final FireInsuraceDao fireInsuraceDao;
-    private final SeaInsuraceDao seaInsuraceDao;
+    private final InsuranceDao insuranceDao;
 
     @Override
     public PostInsuranceRes createInsuranceCar(PostCarReq postCarRequest) {
-        Insurance insurance = insuraceDao.save(postCarRequest.of(Insurance.Type.Car));
-        CarInsurance carInsurance = carInsuraceDao.save(postCarRequest.toEntity(insurance));
-        return response(insurance, "자동차");
+        Insurance carInsurance = insuranceDao.save(postCarRequest.toEntity());
+        return response(carInsurance, "자동차");
     }
 
     @Override
     public PostInsuranceRes createInsuranceFire(PostFireReq postFireRequest) {
-        Insurance insurance = insuraceDao.save(postFireRequest.of(Insurance.Type.Fire));
-        FireInsurance fireInsurance = fireInsuraceDao.save(postFireRequest.toEntity(insurance));
-        return response(insurance, "화재");
+        Insurance fireInsurance = insuranceDao.save(postFireRequest.toEntity());
+        return response(fireInsurance, "화재");
     }
 
     @Override
     public PostInsuranceRes createInsuranceSea(PostSeaReq postSeaRequest) {
-        Insurance insurance = insuraceDao.save(postSeaRequest.of(Insurance.Type.Sea));
-        SeaInsurance seaInsurance = seaInsuraceDao.save(postSeaRequest.toEntity(insurance));
-        return response(insurance, "해상");
+        Insurance seaInsurance = insuranceDao.save(postSeaRequest.toEntity());
+        return response(seaInsurance, "해상");
     }
 
     public PostInsuranceRes response(Insurance insurance, String type){
         return PostInsuranceRes.builder()
                 .message(type+" 보험 설계가 완료되었습니다.")
                 .name(insurance.getName())
-                .insuranceId(insurance.getInsuranceId())
-                .type(insurance.getType())
+                .insuranceId(insurance.getId())
                 .build();
     }
 

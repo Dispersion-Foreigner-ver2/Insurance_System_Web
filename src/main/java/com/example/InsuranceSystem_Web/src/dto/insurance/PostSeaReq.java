@@ -1,7 +1,8 @@
 package com.example.InsuranceSystem_Web.src.dto.insurance;
 
-import com.example.InsuranceSystem_Web.src.entity.Insurance.Insurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.SeaInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.SeaInsurance;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -31,15 +33,17 @@ public class PostSeaReq {
     @NotNull
     private int revenueDamageBasicMoney;
 
-    public Insurance of(Insurance.Type type){
-        return Insurance.of(name, explanation,premium,type);
-    }
 
-    public SeaInsurance toEntity(Insurance insurance){
+    public SeaInsurance toEntity(){
         return SeaInsurance.builder()
+                .name(name)
+                .explanation(explanation)
+                .premium(premium)
+                .authorization(true)
+                .authorizationDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
                 .generalDamageBasicMoney(generalDamageBasicMoney)
                 .revenueDamageBasicMoney(revenueDamageBasicMoney)
-                .insurance(insurance)
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.src.dao.insurance.delete;
 
-import com.example.InsuranceSystem_Web.src.entity.Insurance.FireInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 
 public interface FireInsuranceDAO {
   public boolean add(FireInsurance insurance);

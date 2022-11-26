@@ -1,26 +1,23 @@
 package com.example.InsuranceSystem_Web.src.dto.insurance;
 
-import com.example.InsuranceSystem_Web.src.entity.Insurance.FireInsurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.Insurance;
-import lombok.AllArgsConstructor;
+import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-@Getter
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
 public class PostFireReq {
 
     // Insuracne
     @NotBlank(message = "보험이름이 공백입니다. 정확히 입력해주세요.")
-    @NotEmpty(message = "보험이름을 입력해주세요.")
     private String name;
-    @NotBlank
-    @NotEmpty(message = "explanation을 입력해주세요.")
+    @NotBlank(message = "explanation을 입력해주세요.")
     private String explanation;
     @NotNull(message = "premium을 입력해주세요.")
     private int premium;
@@ -33,16 +30,18 @@ public class PostFireReq {
     @NotNull
     private int buildingDamageBasicMoney;
 
-    public Insurance of(Insurance.Type type){
-        return Insurance.of(name, explanation,premium,type);
-    }
 
-    public FireInsurance toEntity(Insurance insurance){
+    public FireInsurance toEntity(){
         return FireInsurance.builder()
+                .name(name)
+                .explanation(explanation)
+                .premium(premium)
+                .authorization(true)
+                .authorizationDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
                 .surroundingDamageBasicMoney(surroundingDamageBasicMoney)
                 .humanDamageBasicMoney(humanDamageBasicMoney)
                 .buildingDamageBasicMoney(buildingDamageBasicMoney)
-                .insurance(insurance)
                 .build();
     }
 

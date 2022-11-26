@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.src.dao.insurance.delete;
 
-import com.example.InsuranceSystem_Web.src.entity.Insurance.CarInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 
 public interface CarInsuranceDAO  {
 

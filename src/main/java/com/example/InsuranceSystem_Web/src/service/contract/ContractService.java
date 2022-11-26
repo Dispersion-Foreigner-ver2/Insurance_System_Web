@@ -3,15 +3,13 @@ package com.example.InsuranceSystem_Web.src.service.contract;
 import com.example.InsuranceSystem_Web.src.dao.contract.ContractDAO;
 import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDAO;
 import com.example.InsuranceSystem_Web.src.dao.insurance.delete.InsuranceDAO;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.FireInsurance;
-import com.example.InsuranceSystem_Web.src.entity.Insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
 import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ContractService {
     private ContractDAO contractDAO;

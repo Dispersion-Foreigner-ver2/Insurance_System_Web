@@ -1,12 +1,10 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
-import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import com.example.InsuranceSystem_Web.src.dto.staff.StaffJoinForm;
 import com.example.InsuranceSystem_Web.src.dto.staff.StaffLoginForm;
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffMainForm;
+import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import com.example.InsuranceSystem_Web.src.exception.staffException.StaffException;
 import com.example.InsuranceSystem_Web.src.service.staff.StaffService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,7 +103,7 @@ public class StaffController {
         Long findStaffId = Long.parseLong(staffId);
         Staff staff = staffService.getStaff(findStaffId);
 
-        model.addAttribute("staffMainForm", new StaffMainForm(staff.getId(), staff.getDepartment(), staff.getName()));
+//        model.addAttribute("staffMainForm", new StaffMainForm(staff.getId(), staff.getDepartment(), staff.getName()));
 
 
 

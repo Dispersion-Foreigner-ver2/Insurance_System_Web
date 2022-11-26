@@ -11,7 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/insurance")
 @Api(tags ="1. insurance API ")
+@Slf4j
 public class InsuranceController {
 
     private final InsuranceService insuranceService;
@@ -37,7 +40,8 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/car")
-    public ResponseEntity<?> createInsuranceCar(@Valid @RequestBody PostCarReq postCarReq){
+    public ResponseEntity<?> createInsuranceCar(@Valid  PostCarReq postCarReq){
+        insuranceService.createInsuranceCar(postCarReq);
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarReq)));
     }
 
@@ -47,7 +51,9 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/fire")
-    public ResponseEntity<?> createInsuranceFire(@Valid @RequestBody PostFireReq postFireRequest){
+    public ResponseEntity<?> createInsuranceFire(@Valid PostFireReq postFireRequest){
+        log.info("123");
+        insuranceService.createInsuranceFire(postFireRequest);
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceFire(postFireRequest)));
     }
 
@@ -57,7 +63,7 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/sea")
-    public ResponseEntity<?> createInsuranceSea(@Valid @RequestBody PostSeaReq postSeaRequest){
+    public ResponseEntity<?> createInsuranceSea(@Valid PostSeaReq postSeaRequest){
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceSea(postSeaRequest)));
     }
 
