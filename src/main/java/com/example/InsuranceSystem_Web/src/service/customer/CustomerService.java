@@ -74,43 +74,45 @@ public class CustomerService {
     }
 
 @Transactional
-    public Customer joinCustomer(String customerName, String customerSSN, String customerAddress, String customerPhoneNum, String customerEmail, String customerAccount, int customerAge, int customerSex, int customerJob, int customerDisease, int customerHistoryYear, int customerCureComplete) {
+    public Customer joinCustomer(CustomerJoinForm customerJoinForm) {
 
         Customer customer = new Customer();
 
+
+
         customer.setId(setCustomerId());
-        customer.setName(customerName);
-        customer.setSSN(customerSSN);
-        customer.setAddress(customerAddress);
-        customer.setPhoneNumber(customerPhoneNum);
-        customer.setEmail(customerEmail);
-        customer.setAccount(customerAccount);
+        customer.setName(customerJoinForm.getName());
+        customer.setSSN(customerJoinForm.getSsn());
+        customer.setAddress(customerJoinForm.getAddress());
+        customer.setPhoneNumber(customerJoinForm.getPhoneNum());
+        customer.setEmail(customerJoinForm.getEmail());
+        customer.setAccount(customerJoinForm.getAccount());
         customer.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 
-        if (customerSex == 1) {
-            customer.setSex(true);
-        } else if (customerSex == 2) {
-            customer.setSex(false);
-        }
+//        if (customerSex== 1) {
+//            customer.setSex(true);
+//        } else if (customerSex == 2) {
+//            customer.setSex(false);
+//        }
+//
+//        customer.setJob(Customer.Job.values()[customerJob - 1]);
+//        customer.setAge(customerAge);
+//
+//
+//        MedicalHistory medicalHistory = new MedicalHistory();
+//
+//        medicalHistory.setCustomerId(customer.getId());
+//        medicalHistory.setMyDisease(MedicalHistory.Disease.values()[customerDisease - 1]);
+//        if (customerDisease != 5) {
+//            medicalHistory.setHistoryYear(customerHistoryYear);
+//            if (customerCureComplete == 1) {
+//                medicalHistory.setCureComplete(true);
+//            } else {
+//                medicalHistory.setCureComplete(false);
+//            }
+//        }
 
-        customer.setJob(Customer.Job.values()[customerJob - 1]);
-        customer.setAge(customerAge);
-
-
-        MedicalHistory medicalHistory = new MedicalHistory();
-
-        medicalHistory.setCustomerId(customer.getId());
-        medicalHistory.setMyDisease(MedicalHistory.Disease.values()[customerDisease - 1]);
-        if (customerDisease != 5) {
-            medicalHistory.setHistoryYear(customerHistoryYear);
-            if (customerCureComplete == 1) {
-                medicalHistory.setCureComplete(true);
-            } else {
-                medicalHistory.setCureComplete(false);
-            }
-        }
-
-        customer.setMedicalHistory(medicalHistory);
+//        customer.setMedicalHistory(medicalHistory);
 
         this.customerDAO.add(customer);
 

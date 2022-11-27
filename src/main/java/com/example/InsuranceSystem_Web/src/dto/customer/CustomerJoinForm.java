@@ -45,6 +45,8 @@ public class CustomerJoinForm {
 
     private Ship ship;
 
+    private int customerSex;
+
 
 
 }

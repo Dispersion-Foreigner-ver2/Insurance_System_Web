@@ -36,13 +36,13 @@ public class CustomerController {
     }
 
     @PostMapping("/customerJoin")
-    private String join(@Valid String customerName, String customerSSN, String customerAddress, String customerPhoneNum, String customerEmail, String customerAccount, int customerAge, int customerSex, int customerJob, int customerDisease, int customerHistoryYear, int customerCureComplete, BindingResult result) throws Exception {
+    private String join(@Valid CustomerJoinForm customerJoinForm, BindingResult result) throws Exception {
 
         if (result.hasErrors()) {
             return "customerJoin";
         }
 
-        customerService.joinCustomer(customerName,  customerSSN,  customerAddress,  customerPhoneNum,  customerEmail,  customerAccount,  customerAge,  customerSex,  customerJob,  customerDisease,  customerHistoryYear,  customerCureComplete);
+        customerService.joinCustomer(customerJoinForm);
 
 
         return "customerJoin";
