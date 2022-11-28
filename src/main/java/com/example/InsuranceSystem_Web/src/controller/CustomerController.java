@@ -1,12 +1,8 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
 
-import com.example.InsuranceSystem_Web.src.dto.customer.CustomerJoinForm;
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffJoinForm;
-import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
-import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
+import com.example.InsuranceSystem_Web.src.dto.customer.PostCustomerJoinDto;
 import com.example.InsuranceSystem_Web.src.service.customer.CustomerService;
-import com.example.InsuranceSystem_Web.src.service.staff.StaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.naming.Binding;
 import javax.validation.Valid;
 
 @Controller
@@ -31,18 +28,19 @@ public class CustomerController {
     @GetMapping("/customerJoin")
     private String join(Model model) {
 
-        model.addAttribute("customerJoinForm", new CustomerJoinForm());
-        return "customerJoin";
+        model.addAttribute("customerJoinForm", new PostCustomerJoinDto());
+      //  return "customerJoin";
+        return null;
     }
 
     @PostMapping("/customerJoin")
-    private String join(@Valid CustomerJoinForm customerJoinForm, BindingResult result) throws Exception {
+    private String join(@Valid PostCustomerJoinDto postCustomerJoinDto, BindingResult result){
 
         if (result.hasErrors()) {
             return "customerJoin";
         }
 
-        customerService.joinCustomer(customerJoinForm);
+        customerService.join(postCustomerJoinDto);
 
 
         return "customerJoin";

@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.service.StaffService;
-
-import com.example.InsuranceSystem_Web.dao.StaffDAO.StaffDAO;
+;
+import com.example.InsuranceSystem_Web.src.dao.staff.StaffDAO;
 import com.example.InsuranceSystem_Web.src.service.staff.StaffService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

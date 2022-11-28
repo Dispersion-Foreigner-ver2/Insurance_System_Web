@@ -1,19 +1,12 @@
 package com.example.InsuranceSystem_Web.src.dao.customer;
 
 import com.example.InsuranceSystem_Web.src.entity.customer.Ship;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-public interface ShipDAO {
-  boolean add(Ship ship);
+@Repository
+public interface ShipDAO extends JpaRepository<Ship, Integer> {
 
-  boolean delete(int id);
-
-  Ship get(int id);
-
-  boolean update(Ship ship);
-
-  int getSize();
-
-  public ArrayList<Ship> getShipList();
 }

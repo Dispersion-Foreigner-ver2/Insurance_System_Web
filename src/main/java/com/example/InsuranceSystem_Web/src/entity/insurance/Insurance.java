@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Insurance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "insurance_id")
     private Long id;
 

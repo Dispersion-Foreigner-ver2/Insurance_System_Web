@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StaffJoinForm {
+public class PostStaffJoinDto {
 
     @NotBlank(message = "사원 번호를 입력해주세요.")
     private String id;

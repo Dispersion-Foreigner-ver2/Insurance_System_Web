@@ -3,9 +3,9 @@ package com.example.InsuranceSystem_Web.src.controller;
 import com.example.InsuranceSystem_Web.config.BaseResponse;
 import com.example.InsuranceSystem_Web.src.service.insurance.InsuranceService;
 import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceRes;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarReq;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireReq;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaReq;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarInsuranceDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaInsuranceDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -40,9 +38,9 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/car")
-    public ResponseEntity<?> createInsuranceCar(@Valid  PostCarReq postCarReq){
-        insuranceService.createInsuranceCar(postCarReq);
-        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarReq)));
+    public ResponseEntity<?> createInsuranceCar(@Valid PostCarInsuranceDto postCarInsuranceDto){
+        insuranceService.createInsuranceCar(postCarInsuranceDto);
+        return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarInsuranceDto)));
     }
 
     // 화재
@@ -51,8 +49,7 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/fire")
-    public ResponseEntity<?> createInsuranceFire(@Valid PostFireReq postFireRequest){
-        log.info("123");
+    public ResponseEntity<?> createInsuranceFire(@Valid PostFireInsuranceDto postFireRequest){
         insuranceService.createInsuranceFire(postFireRequest);
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceFire(postFireRequest)));
     }
@@ -63,7 +60,7 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceRes.class)
     })
     @PostMapping("/design/sea")
-    public ResponseEntity<?> createInsuranceSea(@Valid PostSeaReq postSeaRequest){
+    public ResponseEntity<?> createInsuranceSea(@Valid PostSeaInsuranceDto postSeaRequest){
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceSea(postSeaRequest)));
     }
 

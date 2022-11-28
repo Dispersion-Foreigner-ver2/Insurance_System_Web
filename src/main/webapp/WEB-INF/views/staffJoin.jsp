@@ -15,7 +15,7 @@
 <form action="/staffJoin" method="post">
     아이디
     <input type="text" id="id" name="id">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('id')}">
             <strong>${errors.getFieldError('id').defaultMessage }</strong>
         </c:if>
@@ -23,7 +23,7 @@
     <p></p>
     비밀번호
     <input type="password" name="pw">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('pw')}">
             <strong>${errors.getFieldError('pw').defaultMessage }</strong>
         </c:if>
@@ -31,7 +31,7 @@
     <p></p>
     이름
     <input type="text" name="name">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('name')}">
             <strong>${errors.getFieldError('name').defaultMessage }</strong>
         </c:if>
@@ -39,7 +39,7 @@
     <p></p>
     주민등록번호
     <input type="text" name="SSN">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('SSN')}">
             <strong>${errors.getFieldError('SSN').defaultMessage }</strong>
         </c:if>
@@ -47,7 +47,7 @@
     <p></p>
     이메일
     <input type="text" name="eMail">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('eMail')}">
             <strong>${errors.getFieldError('eMail').defaultMessage }</strong>
         </c:if>
@@ -55,7 +55,7 @@
     <p></p>
     핸드폰 번호
     <input type="text" name="phoneNum">
-    <spring:hasBindErrors name="staffJoinForm">
+    <spring:hasBindErrors name="postStaffJoinDto">
         <c:if test="${errors.hasFieldErrors('phoneNum')}">
             <strong>${errors.getFieldError('phoneNum').defaultMessage }</strong>
         </c:if>

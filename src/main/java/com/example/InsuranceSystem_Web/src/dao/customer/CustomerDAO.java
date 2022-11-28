@@ -1,18 +1,10 @@
 package com.example.InsuranceSystem_Web.src.dao.customer;
 import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-public interface CustomerDAO {
-	boolean add(Customer customer);
-
-	boolean delete(int customerId);
-
-	Customer get(int customerId);
-
-	boolean update(Customer customer);
-
-	int getSize();
-
-	public ArrayList<Customer> getCustomerList();
+@Repository
+public interface CustomerDAO extends JpaRepository<Customer, Integer> {
 }

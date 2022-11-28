@@ -1,9 +1,9 @@
 package com.example.InsuranceSystem_Web.src.service.insurance;
 
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarReq;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireReq;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaReq;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarInsuranceDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaInsuranceDto;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceRes;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +18,19 @@ public class InsuranceServiceImpl implements InsuranceService{
     private final InsuranceDao insuranceDao;
 
     @Override
-    public PostInsuranceRes createInsuranceCar(PostCarReq postCarRequest) {
+    public PostInsuranceRes createInsuranceCar(PostCarInsuranceDto postCarRequest) {
         Insurance carInsurance = insuranceDao.save(postCarRequest.toEntity());
         return response(carInsurance, "자동차");
     }
 
     @Override
-    public PostInsuranceRes createInsuranceFire(PostFireReq postFireRequest) {
+    public PostInsuranceRes createInsuranceFire(PostFireInsuranceDto postFireRequest) {
         Insurance fireInsurance = insuranceDao.save(postFireRequest.toEntity());
         return response(fireInsurance, "화재");
     }
 
     @Override
-    public PostInsuranceRes createInsuranceSea(PostSeaReq postSeaRequest) {
+    public PostInsuranceRes createInsuranceSea(PostSeaInsuranceDto postSeaRequest) {
         Insurance seaInsurance = insuranceDao.save(postSeaRequest.toEntity());
         return response(seaInsurance, "해상");
     }

@@ -1,19 +1,12 @@
 package com.example.InsuranceSystem_Web.src.dao.customer;
 
 import com.example.InsuranceSystem_Web.src.entity.customer.House;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-public interface HouseDAO {
-  boolean add(House house);
+@Repository
+public interface HouseDAO  extends JpaRepository<House, Integer> {
 
-  boolean delete(int id);
-
-  House get(int id);
-
-  boolean update(House house);
-
-  int getSize();
-
-  public ArrayList<House> getHouseList();
 }

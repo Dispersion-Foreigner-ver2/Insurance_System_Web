@@ -1,7 +1,6 @@
 package com.example.InsuranceSystem_Web.src.dto.insurance;
 
 import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
-import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
-public class PostCarReq {
+public class PostCarInsuranceDto {
 
     // Insuracne
     @NotBlank(message = "보험이름이 공백입니다. 정확히 입력해주세요.")

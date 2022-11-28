@@ -1,7 +1,7 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffJoinForm;
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffLoginForm;
+import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffJoinDto;
+import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import com.example.InsuranceSystem_Web.src.exception.staffException.StaffException;
 import com.example.InsuranceSystem_Web.src.service.staff.StaffService;
@@ -32,18 +32,18 @@ public class StaffController {
 
     @GetMapping("/")
     private String login(Model model) {
-        model.addAttribute("staffLoginForm", new StaffLoginForm());
+        model.addAttribute("staffLoginForm", new PostStaffLoginDto());
         return "staffLogin";
     }
 
     @PostMapping("login")
-    private String login(@Valid StaffLoginForm staffLoginForm, BindingResult result, Model model) throws Exception {
+    private String login(@Valid PostStaffLoginDto postStaffLoginDto, BindingResult result, Model model) throws Exception {
 
         if (result.hasErrors()) {
             return "staffLogin";
         }
 
-        Staff staff = staffService.login(staffLoginForm);
+        Staff staff = staffService.login(postStaffLoginDto);
 
         switch (staff.getDepartment()) {
             case Design:
@@ -66,19 +66,19 @@ public class StaffController {
     @GetMapping("/staffJoin")
     private String join(Model model) {
 
-        model.addAttribute("staffJoinForm", new StaffJoinForm());
+        model.addAttribute("staffJoinForm", new PostStaffJoinDto());
         return "staffJoin";
     }
 
     @PostMapping("/staffJoin")
-    private String join(@Valid StaffJoinForm staffJoinForm, BindingResult result) throws Exception {
+    private String join(@Valid PostStaffJoinDto postStaffJoinDto, BindingResult result) throws Exception {
 
         if (result.hasErrors()) {
             return "staffJoin";
         }
 
-        staffService.createStaff(staffJoinForm);
-        Long staffId = Long.parseLong(staffJoinForm.getId());
+        staffService.createStaff(postStaffJoinDto);
+        Long staffId = Long.parseLong(postStaffJoinDto.getId());
         Staff staff = staffService.getStaff(staffId);
         switch (staff.getDepartment()) {
             case Design:
@@ -102,9 +102,6 @@ public class StaffController {
     private String main(@PathVariable("staffId") String staffId, Model model) {
         Long findStaffId = Long.parseLong(staffId);
         Staff staff = staffService.getStaff(findStaffId);
-
-//        model.addAttribute("staffMainForm", new StaffMainForm(staff.getId(), staff.getDepartment(), staff.getName()));
-
 
 
         return "redirect:/";

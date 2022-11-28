@@ -1,8 +1,8 @@
 package com.example.InsuranceSystem_Web.src.service.staff;
 
 import com.example.InsuranceSystem_Web.src.dao.staff.StaffDAO;
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffJoinForm;
-import com.example.InsuranceSystem_Web.src.dto.staff.StaffLoginForm;
+import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffJoinDto;
+import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
 import com.example.InsuranceSystem_Web.src.entity.staff.Department;
 import com.example.InsuranceSystem_Web.src.entity.staff.Position;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
@@ -33,14 +33,14 @@ public class StaffService {
     }
 
 
-    public Staff login(StaffLoginForm staffLoginForm) throws Exception {
-        if (!staffLoginForm.getStaffId().matches("^[0-9]+$")) {
+    public Staff login(PostStaffLoginDto postStaffLoginDto) throws Exception {
+        if (!postStaffLoginDto.getStaffId().matches("^[0-9]+$")) {
             throw new StaffException(StaffExceptionType.WRONG_TYPE_INPUT);
         }
-        Long staffId = Long.parseLong(staffLoginForm.getStaffId());
+        Long staffId = Long.parseLong(postStaffLoginDto.getStaffId());
         Staff loginStaff = staffDAO.get(staffId);
         if (loginStaff != null) {
-            if (staffLoginForm.getPassword().equals(loginStaff.getPassword())) {
+            if (postStaffLoginDto.getPassword().equals(loginStaff.getPassword())) {
                 return loginStaff;
             } else {
                 throw new StaffException(StaffExceptionType.NOT_FOUND_STAFF);
@@ -53,28 +53,28 @@ public class StaffService {
 
 
 
-    public boolean createStaff(StaffJoinForm staffJoinForm) throws Exception {
+    public boolean createStaff(PostStaffJoinDto postStaffJoinDto) throws Exception {
 
         Staff createdStaff = new Staff();
 
-        if (!staffJoinForm.getId().matches("^[0-9]+$")) {
+        if (!postStaffJoinDto.getId().matches("^[0-9]+$")) {
             throw new StaffException(StaffExceptionType.WRONG_TYPE_INPUT);
         }
 
-        Long staffId = Long.parseLong(staffJoinForm.getId());
+        Long staffId = Long.parseLong(postStaffJoinDto.getId());
 
         createdStaff.setId(staffId);
-        createdStaff.setPassword(staffJoinForm.getPw());
+        createdStaff.setPassword(postStaffJoinDto.getPw());
 
-        createdStaff.setDepartment(staffJoinForm.getDepartment());
-        createdStaff.setPosition(staffJoinForm.getPosition());
+        createdStaff.setDepartment(postStaffJoinDto.getDepartment());
+        createdStaff.setPosition(postStaffJoinDto.getPosition());
 
-        createdStaff.setName(staffJoinForm.getName());
-        createdStaff.setSSN(staffJoinForm.getSSN());
+        createdStaff.setName(postStaffJoinDto.getName());
+        createdStaff.setSSN(postStaffJoinDto.getSSN());
 
-        createdStaff.setGender(staffJoinForm.isGender());
-        createdStaff.setEmail(staffJoinForm.getEMail());
-        createdStaff.setPhoneNum(staffJoinForm.getPhoneNum());
+        createdStaff.setGender(postStaffJoinDto.isGender());
+        createdStaff.setEmail(postStaffJoinDto.getEMail());
+        createdStaff.setPhoneNum(postStaffJoinDto.getPhoneNum());
         createdStaff.setJoinDate(LocalDate.now());
 
 

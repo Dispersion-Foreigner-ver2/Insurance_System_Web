@@ -5,12 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 
 @Getter @Setter
 @NoArgsConstructor
-public class StaffLoginForm {
+public class PostStaffLoginDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     private String staffId;
