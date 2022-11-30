@@ -1,10 +1,10 @@
-package com.example.InsuranceSystem_Web.src.dao.contract;
+package com.example.InsuranceSystem_Web.src.dao.contract.delete;
 
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
 
 import java.util.ArrayList;
 
-public interface ContractDAO {
+public interface Delete_ContractDAO {
 
 	public boolean add(Contract contract);
 

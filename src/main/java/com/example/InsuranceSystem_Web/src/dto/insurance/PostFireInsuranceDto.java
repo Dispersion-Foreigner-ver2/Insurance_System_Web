@@ -33,8 +33,6 @@ public class PostFireInsuranceDto {
                 .name(name)
                 .explanation(explanation)
                 .premium(premium)
-                .authorization(true)
-                .authorizationDate(LocalDateTime.now())
                 .createdDate(LocalDateTime.now())
                 .surroundingDamageBasicMoney(surroundingDamageBasicMoney)
                 .humanDamageBasicMoney(humanDamageBasicMoney)

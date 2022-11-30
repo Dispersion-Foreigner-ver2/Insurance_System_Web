@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.service.contract;
+package com.example.InsuranceSystem_Web.src.service.contract.delete;
 
 
 import com.example.InsuranceSystem_Web.src.entity.customer.Customer;

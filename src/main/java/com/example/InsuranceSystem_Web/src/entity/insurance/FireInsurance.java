@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Entity
 @DiscriminatorValue("F")
 @NoArgsConstructor
-@Getter @SuperBuilder
+@Getter
+@SuperBuilder
 public class FireInsurance extends Insurance{
 
   private int surroundingDamageBasicMoney;
@@ -18,8 +19,9 @@ public class FireInsurance extends Insurance{
   private int buildingDamageBasicMoney;
 
 
-  public FireInsurance(String name, String explanation, int premium, boolean authorization, LocalDateTime authorizationDate, LocalDateTime createdDate, LocalDateTime modifiedDate, int surroundingDamageBasicMoney, int humanDamageBasicMoney, int buildingDamageBasicMoney) {
-    super(name, explanation, premium, authorization, authorizationDate, createdDate, modifiedDate);
+  public FireInsurance(String name, String explanation, int premium, LocalDateTime createdDate,
+                       int surroundingDamageBasicMoney, int humanDamageBasicMoney, int buildingDamageBasicMoney) {
+    super(name, explanation, premium,createdDate);
     this.surroundingDamageBasicMoney = surroundingDamageBasicMoney;
     this.humanDamageBasicMoney = humanDamageBasicMoney;
     this.buildingDamageBasicMoney = buildingDamageBasicMoney;

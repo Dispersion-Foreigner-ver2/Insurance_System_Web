@@ -1,4 +1,4 @@
-package com.example.InsuranceSystem_Web.src.service.contract;
+package com.example.InsuranceSystem_Web.src.service.contract.delete;
 
 public class Indemnification {
 

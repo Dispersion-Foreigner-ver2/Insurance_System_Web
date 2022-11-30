@@ -9,7 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class PostCarInsuranceDto {
 
@@ -33,8 +34,6 @@ public class PostCarInsuranceDto {
                 .name(name)
                 .explanation(explanation)
                 .premium(premium)
-                .authorization(true)
-                .authorizationDate(LocalDateTime.now())
                 .createdDate(LocalDateTime.now())
                 .humanDamageBasicMoney(humanDamageBasicMoney)
                 .carDamageBasicMoney(carDamageBasicMoney)
