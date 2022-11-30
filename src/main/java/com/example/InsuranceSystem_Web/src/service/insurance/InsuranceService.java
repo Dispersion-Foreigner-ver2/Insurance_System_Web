@@ -1,13 +1,19 @@
 package com.example.InsuranceSystem_Web.src.service.insurance;
 
-import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceRes;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarInsuranceDto;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
-import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaInsuranceDto;
+import com.example.InsuranceSystem_Web.src.vo.insurance.*;
+import com.example.InsuranceSystem_Web.src.dto.insurance.*;
 
 public interface InsuranceService {
 
-    PostInsuranceRes createInsuranceCar(PostCarInsuranceDto postCarRequest);
-    PostInsuranceRes createInsuranceFire(PostFireInsuranceDto postFireRequest);
-    PostInsuranceRes createInsuranceSea(PostSeaInsuranceDto postSeaRequest);
+    PostInsuranceVo createInsuranceCar(PostCarInsuranceDto postCarRequest);
+    PostInsuranceVo createInsuranceFire(PostFireInsuranceDto postFireRequest);
+    PostInsuranceVo createInsuranceSea(PostSeaInsuranceDto postSeaRequest);
+
+    PostInsuranceVo setAuthorize(Long insuranceId);
+    GetInsuranceCountVo readInsuranceCount();
+
+    DeleteInsuranceVo deleteInsurance(Long insuranceId);
+
+    Object readInsurance();
+    Object readDetailInsurance(Long insuranceId);
 }

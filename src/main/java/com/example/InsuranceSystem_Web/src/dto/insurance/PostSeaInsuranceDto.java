@@ -32,8 +32,6 @@ public class PostSeaInsuranceDto {
                 .name(name)
                 .explanation(explanation)
                 .premium(premium)
-                .authorization(true)
-                .authorizationDate(LocalDateTime.now())
                 .createdDate(LocalDateTime.now())
                 .generalDamageBasicMoney(generalDamageBasicMoney)
                 .revenueDamageBasicMoney(revenueDamageBasicMoney)
