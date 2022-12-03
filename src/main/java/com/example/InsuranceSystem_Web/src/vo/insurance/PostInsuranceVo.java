@@ -9,5 +9,7 @@ public class PostInsuranceVo {
     private String message;
     private Long insuranceId;
 
+    private String type;
+    private int insuranceTotalCustomer;
     private String name;
 }

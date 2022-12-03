@@ -40,7 +40,7 @@ public class InsuranceServiceImpl implements InsuranceService{
         return response(seaInsurance, "해상");
     }
 
-
+//객체를 만들어서 컨트롤러로 보낸 것
     public PostInsuranceVo response(Insurance insurance, String type){
         return PostInsuranceVo.builder()
                 .message(type+" 보험 생성이 완료되었습니다. 보험 관리 화면에서 인가를 받아야 해당 보험을 이용할 수 있습니다. ")

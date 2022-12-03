@@ -51,7 +51,7 @@ public class InsuranceController {
     }
 
     // 바다
-    @ApiOperation(value = "보험을 설계한다.")
+    @ApiOperation(value = "해상 보험을 설계한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceVo.class)
     })

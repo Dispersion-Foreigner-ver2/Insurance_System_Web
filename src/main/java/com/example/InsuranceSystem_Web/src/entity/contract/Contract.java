@@ -18,15 +18,17 @@ public class Contract {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="contract_id")
 	private Long contractId;
 
 	private int insurancePrice;
-	private int premiumRate;
-	private double compensationAmount;
+	private int premiumRate;//보험율
+	private double compensationAmount;//총 보상액
 
 	private Date contractDate;
-	private boolean underWrite;
+	private boolean underWrite;//인수심사 -> 받으면 계약o 안되면 계약x
 	private boolean pay;
+
 
 	@ManyToOne
 	@JoinColumn(name="customer_id")
@@ -39,5 +41,9 @@ public class Contract {
 	@OneToOne
 	@JoinColumn(name="staff_id")
 	public Staff staff;
+
+	public Contract(Long contractId){
+		this.contractId=contractId;
+	}
 
 }

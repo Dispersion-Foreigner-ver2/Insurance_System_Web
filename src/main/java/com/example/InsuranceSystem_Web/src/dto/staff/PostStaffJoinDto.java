@@ -31,9 +31,9 @@ public class PostStaffJoinDto {
     @NotBlank(message = "전화 번호를 입력해주세요.")
     private String phoneNum;
 
-    private Department department;
+    private int department;
 
-    private Position position;
+    private int position;
 
     private boolean gender;
 

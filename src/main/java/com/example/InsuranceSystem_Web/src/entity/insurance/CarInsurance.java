@@ -19,7 +19,7 @@ public class CarInsurance extends Insurance{
   private Integer humanDamageBasicMoney;
   private Integer carDamageBasicMoney;
 
-
+//setter라고 생각하면 됨
   public CarInsurance(String name, String explanation, int premium, LocalDateTime createdDate,
                       int humanDamageBasicMoney, int carDamageBasicMoney) {
     super(name, explanation, premium, createdDate);
