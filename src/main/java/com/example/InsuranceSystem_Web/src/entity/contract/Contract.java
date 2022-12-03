@@ -18,6 +18,7 @@ public class Contract {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="contract_id")
 	private Long contractId;
 
 	private int insurancePrice;
@@ -39,5 +40,9 @@ public class Contract {
 	@OneToOne
 	@JoinColumn(name="staff_id")
 	public Staff staff;
+
+	public Contract(Long contractId){
+		this.contractId=contractId;
+	}
 
 }

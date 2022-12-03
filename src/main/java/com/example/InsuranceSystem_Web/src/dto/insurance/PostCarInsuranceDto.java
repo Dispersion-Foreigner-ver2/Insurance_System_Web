@@ -28,7 +28,7 @@ public class PostCarInsuranceDto {
     @NotNull
     private int carDamageBasicMoney;
 
-
+//빌더 패턴 -> getter setter을 이렇게 표현
     public CarInsurance toEntity(){
         return CarInsurance.builder()
                 .name(name)
