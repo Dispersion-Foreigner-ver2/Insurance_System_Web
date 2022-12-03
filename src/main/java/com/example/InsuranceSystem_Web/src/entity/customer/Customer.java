@@ -1,6 +1,8 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
 
+import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,7 +42,7 @@ public class Customer {
 
 	@Id
 	@Column(name = "customer_id")
-	private int id;
+	private Long id;
 
 	@Column(name = "customer_age")
 	private int age;
@@ -76,6 +78,13 @@ public class Customer {
 
 	@Column(name = "customer_joinDate")
 	private LocalDate joinDate;
+
+
+
+
+
+
+
 
 
 

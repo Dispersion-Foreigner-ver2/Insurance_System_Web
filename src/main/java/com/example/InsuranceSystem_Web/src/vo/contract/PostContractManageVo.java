@@ -1,6 +1,5 @@
 package com.example.InsuranceSystem_Web.src.vo.contract;
 
-import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostContractVo {
+public class PostContractManageVo {
 // private Long customerId;
 // private Long insuranceId;
  private Long insuranceId;
