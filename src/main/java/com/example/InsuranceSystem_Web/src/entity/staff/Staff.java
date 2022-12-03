@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class Staff {

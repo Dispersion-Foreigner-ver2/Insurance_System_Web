@@ -22,13 +22,12 @@ public class Contract {
 	private Long contractId;
 
 	private int insurancePrice;
-	private int premiumRate;//보험율
-	private double compensationAmount;//총 보상액
+	private int premiumRate; // 보험 요율
+	private double compensationAmount; // 보상액
 
 	private Date contractDate;
-	private boolean underWrite;//인수심사 -> 받으면 계약o 안되면 계약x
-	private boolean pay;
-
+	private boolean underWrite; // 인수 심사  - false
+	private boolean pay; // 보상 유무 - false
 
 	@ManyToOne
 	@JoinColumn(name="customer_id")
