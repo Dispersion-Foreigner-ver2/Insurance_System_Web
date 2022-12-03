@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -45,10 +42,26 @@ public class ContractController {
     /**
      * 보험 계약을 해지한다.
      * */
+    @PostMapping("/contractTerminate")
+    public ResponseEntity<?> contractTerminate(@RequestParam("id") Long contractId){
+        return ResponseEntity.ok(new BaseResponse(contractService.contractTerminate(contractId)));
+    }
+
+
 
     /**
      * 보험 계약을 체결한다.
      * */
+    @PostMapping("/contract")
+    public ResponseEntity<?> contract(@RequestParam("id") Long insuranceId){
+        return ResponseEntity.ok(new BaseResponse(contractService.contract(insuranceId)));
+    }
+
+    @PostMapping("/contract/Conclusion")
+    public ResponseEntity<?> contractConclusion(){
+        return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion()));
+    }
+
 
 
 

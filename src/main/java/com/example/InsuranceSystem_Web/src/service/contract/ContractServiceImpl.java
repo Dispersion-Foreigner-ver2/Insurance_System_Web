@@ -10,12 +10,17 @@ import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.vo.contract.PostContractManageVo;
 import com.example.InsuranceSystem_Web.src.vo.contract.PostContractSearchVo;
+import com.example.InsuranceSystem_Web.src.vo.contract.PostContractTerminateVo;
+import com.example.InsuranceSystem_Web.src.vo.contract.PostContractVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -70,6 +75,37 @@ public class ContractServiceImpl implements ContractService{
                 .customerName(customer.getName())
                 .customerInsuranceId(contract.getInsurance().getId())
                 .customerInsuranceName(contract.getInsurance().getName())
+                .build();
+    }
+
+    @Override
+    public PostContractTerminateVo contractTerminate(Long contractId) {
+        Contract contract=contractDao.findById(contractId).get();
+
+        if(contract!=null){
+            contract.setContractDate(Date.from(Instant.now()));
+
+        }
+        contractDao.delete(contract);
+
+        return PostContractTerminateVo.builder()
+                .message("보험 계약 해지가 완료되었습니다.")
+//                .contractId(contract.getContractId())
+                .build();
+    }
+
+    @Override
+    public Object contractConclusion() {
+        return null;
+    }
+
+    @Override
+    public PostContractVo contract(Long insuranceId) {
+        Optional<Insurance> insurance=insuranceDao.findById(insuranceId);
+
+        insuranceDao.save(insurance.get());
+        return PostContractVo.builder()
+                .message("")
                 .build();
     }
 }
