@@ -1,15 +1,15 @@
 package com.example.InsuranceSystem_Web.src.entity.staff;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Getter @Setter
-//@Builder
+@Getter
+@Builder
+@AllArgsConstructor
 public class Staff {
 
   @Id
@@ -30,8 +30,6 @@ public class Staff {
   @Column(name = "staff_SSN")
   private String SSN;
 
-
-
   @Enumerated(EnumType.STRING)
   private Department department;
 
@@ -46,4 +44,7 @@ public class Staff {
   private int result; //실적
 
 
+  protected Staff() {
+
+  }
 }
