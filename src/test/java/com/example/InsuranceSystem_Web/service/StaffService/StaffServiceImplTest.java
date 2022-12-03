@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.service.StaffService;
 ;
-import com.example.InsuranceSystem_Web.src.dao.staff.StaffDAO;
+import com.example.InsuranceSystem_Web.src.dao.staff.StaffDao;
 import com.example.InsuranceSystem_Web.src.service.staff.StaffServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class StaffServiceImplTest {
 
     @Autowired
-    StaffDAO staffDAO;
+    StaffDao staffDAO;
     @Autowired
     StaffServiceImpl staffServiceImpl;
 

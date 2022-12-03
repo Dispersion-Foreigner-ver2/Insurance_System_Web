@@ -1,6 +1,6 @@
 package com.example.InsuranceSystem_Web.src.service.staff;
 
-import com.example.InsuranceSystem_Web.src.dao.staff.StaffDAO;
+import com.example.InsuranceSystem_Web.src.dao.staff.StaffDao;
 import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffJoinDto;
 import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
 import com.example.InsuranceSystem_Web.src.entity.staff.Department;
@@ -8,24 +8,20 @@ import com.example.InsuranceSystem_Web.src.entity.staff.Position;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import com.example.InsuranceSystem_Web.src.exception.staffException.StaffException;
 import com.example.InsuranceSystem_Web.src.exception.staffException.StaffExceptionType;
-import com.example.InsuranceSystem_Web.src.vo.staff.PostStaffVo;
+import com.example.InsuranceSystem_Web.src.vo.staff.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Period;
+import java.util.*;
 
 @Service
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class StaffServiceImpl implements StaffService {
 
-    private final StaffDAO staffDAO;
-
+    private final StaffDao staffDAO;
 
     @Override
     public PostStaffVo login(PostStaffLoginDto postStaffLoginDto) {
@@ -74,6 +70,8 @@ public class StaffServiceImpl implements StaffService {
                 .build();
 
         Staff joinStaff = staffDAO.save(createStaff);
+        System.out.println(joinStaff.getBasicSalary());
+        System.out.println(joinStaff.getTotalSalary());
 
         return PostStaffVo.builder()
                 .staffId(joinStaff.getId())
@@ -81,6 +79,132 @@ public class StaffServiceImpl implements StaffService {
                 .department(joinStaff.getDepartment().getLabel())
                 .build();
 
+    }
+
+    @Override
+    public List<GetStaffVo> getStaffList() {
+        List<Staff> getStaffList = staffDAO.findAll();
+        List<GetStaffVo> getStaffVoList = new ArrayList<>();
+        if(getStaffList.size() != 0){
+            for(int i=0; i<getStaffList.size(); i++){
+                GetStaffVo getStaffVo = GetStaffVo.builder()
+                        .id(getStaffList.get(i).getId())
+                        .Department(getStaffList.get(i).getDepartment().getLabel())
+                        .name(getStaffList.get(i).getName())
+                        .joinDate(getStaffList.get(i).getJoinDate())
+                        .build();
+                getStaffVoList.add(getStaffVo);
+            }
+        }
+        return getStaffVoList;
+    }
+
+    @Override
+    public Object getStaff(long id) {
+        Staff staff = staffDAO.findById(id).orElse(null);
+        if(staff == null){
+            return BasicMessageVo.builder()
+                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
+                    .build();
+        }
+        return GetStaffDetailVo.builder()
+                .id(staff.getId())
+                .Department(staff.getDepartment().getLabel())
+                .name(staff.getName())
+                .SSN(staff.getSSN())
+                .email(staff.getEmail())
+                .phoneNum(staff.getPhoneNum())
+                .joinDate(staff.getJoinDate())
+                .build();
+    }
+
+    @Override
+    public Object deleteStaff(long id) {
+        Staff staff = staffDAO.findById(id).orElse(null);
+        if(staff == null){
+            return BasicMessageVo.builder()
+                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
+                    .build();
+        }
+        staffDAO.delete(staff);
+        return BasicMessageVo.builder()
+                .message("사원이 해고되었습니다.")
+                .build();
+    }
+
+    @Override
+    public Object getSalary(long id) {
+        Staff staff = staffDAO.findById(id).orElse(null);
+        if(staff == null){
+            return BasicMessageVo.builder()
+                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
+                    .build();
+        }
+        calculateSalary(staff);
+        return GetSalaryVo.builder()
+                .position(staff.getPosition().getLabel())
+                .workDay(calculateWorkDate(staff))
+                .result(staff.getResult())
+                .totalSalary(staff.getTotalSalary())
+                .build();
+    }
+
+    @Override
+    public Object changePosition(long id, int position) {
+        Staff staff = staffDAO.findById(id).orElse(null);
+        if(staff == null){
+            return BasicMessageVo.builder()
+                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
+                    .build();
+        }
+        staff.setPosition(Position.values()[position-1]);
+        staff.setBasicSalary(Position.values()[position-1].getSalary());
+        staffDAO.save(staff);
+        return BasicMessageVo.builder()
+                .message("직책이 변경되었습니다. 직책에 따라 기본 월급이 변경됩니다.")
+                .build();
+    }
+
+    @Override
+    public Object changeDepartment(long id, int department) {
+        Staff staff = staffDAO.findById(id).orElse(null);
+        if(staff == null){
+            return BasicMessageVo.builder()
+                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
+                    .build();
+        }
+        staff.setDepartment(Department.values()[department-1]);
+        staffDAO.save(staff);
+        return BasicMessageVo.builder()
+                .message("성공적으로 부서가 이동되었습니다.")
+                .build();
+    }
+
+    // 실적 추가
+    public void addResult(Staff staff) {
+        staff.setResult(staff.getResult() + 1);
+        staffDAO.save(staff);
+    }
+
+    // 근무 일수
+    public int calculateWorkDate(Staff staff){
+        LocalDate joinDate = staff.getJoinDate();
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(joinDate, today);
+        return period.getDays();
+    }
+
+    // 월급 계산
+    public void calculateSalary(Staff staff){
+        int workDate = calculateWorkDate(staff);
+        int totalSalary = staff.getBasicSalary() + ((workDate/ 365) * 100000) + (staff.getResult() * 50000);
+
+        staff.setTotalSalary(totalSalary);
+        staff.setResult(staff.getResult()+1);
+
+        this.staffDAO.save(staff);
+
+//        최종 월급 = 기본 월급(basicSalary) + 근무일수(count) / 365 * x + 판매 실적(result) * y
     }
 
 
@@ -144,16 +268,6 @@ public class StaffServiceImpl implements StaffService {
 //
 //    }
 
-
-//    public Staff getStaff(long staffId) {
-//        return staffDAO.get(staffId);
-//    }
-//
-//    public void addResult(Staff staff) {
-//        staff.setResult(staff.getResult() + 1);
-//
-//        this.staffDAO.update(staff);
-//    }
 //
 //    public boolean updateDepartment(long staffId, Department department) {
 //        Staff staff = staffDAO.get(staffId);
@@ -165,53 +279,10 @@ public class StaffServiceImpl implements StaffService {
 //        return true;
 //    }
 //
-//    public void fireStaff(long staffId) {
-//        this.staffDAO.delete(staffId);
-//    }
-//
-//    public boolean calculateSalary(long staffId, Staff loginStaff) {
-//        Staff staff = this.staffDAO.get(staffId);
-//
-//        int workDate = this.calculateWorkDate(staffId);
-//        int totalSalary = staff.getBasicSalary() + ((workDate/ 365) * 100000) + (staff.getResult() * 50000);
-//
-//        staff.setTotalSalary(totalSalary);
-//        loginStaff.setResult(staff.getResult()+1);
-//        this.staffDAO.update(loginStaff);
-//
-//        if (this.staffDAO.update(staff)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
+
 //
 //
-////        최종 월급 = 기본 월급(basicSalary) + 근무일수(count) / 365 * x + 판매 실적(result) * y
-//
-//    }
-//
-//
-//    public int calculateWorkDate(long staffId) {
-//        Staff staff = this.staffDAO.get(staffId);
-//
-//        Date today = new Date();
-//        Calendar calendarToday = Calendar.getInstance();
-//        calendarToday.setTime(today);
-//
-//        Calendar serviceDay = Calendar.getInstance();
-////        serviceDay.setTime(staff.getJoinDate());
-//
-//        int count = 0;
-//        while (!serviceDay.after(calendarToday)) {
-//            serviceDay.add(Calendar.DATE, 1);
-//            count++;
-//        }
-//
-//        return count;
-//
-////        최종 월급 = 기본 월급(basicSalary) + 근무일수(count) / 365 * x + 판매 실적(result) * y
-//
-//    }
+
 //
 //    public boolean changePosition(Staff staff, Position position, Staff loginStaff) {
 //        staff.setPosition(position);
