@@ -1,8 +1,6 @@
 package com.example.InsuranceSystem_Web.src.service.contract;
 
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractManageVo;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractSearchVo;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractTerminateVo;
+import com.example.InsuranceSystem_Web.src.vo.contract.*;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ List<PostContractManageVo> contractManage( );
 
     PostContractTerminateVo contractTerminate(Long contractId);
 
-    Object contractConclusion();
+    PostContractConclusionVo contractConclusion( Long insuranceId  );
 
-    Object contract(Long insuranceId);
+//    PostContractVo contract(Long insuranceId);
 }

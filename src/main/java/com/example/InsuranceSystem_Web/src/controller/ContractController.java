@@ -52,14 +52,14 @@ public class ContractController {
     /**
      * 보험 계약을 체결한다.
      * */
-    @PostMapping("/contract")
-    public ResponseEntity<?> contract(@RequestParam("id") Long insuranceId){
-        return ResponseEntity.ok(new BaseResponse(contractService.contract(insuranceId)));
-    }
+//    @PostMapping("/contract")
+//    public ResponseEntity<?> contract(@RequestParam("id") Long insuranceId){
+//        return ResponseEntity.ok(new BaseResponse(contractService.contract(insuranceId)));
+//    }
 
     @PostMapping("/contract/Conclusion")
-    public ResponseEntity<?> contractConclusion(){
-        return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion()));
+    public ResponseEntity<?> contractConclusion(Long insuranceId   ){
+        return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion(insuranceId)));
     }
 
 

@@ -8,10 +8,7 @@ import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
 import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractManageVo;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractSearchVo;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractTerminateVo;
-import com.example.InsuranceSystem_Web.src.vo.contract.PostContractVo;
+import com.example.InsuranceSystem_Web.src.vo.contract.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +17,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -95,19 +91,30 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public Object contractConclusion() {
-        return null;
+    public PostContractConclusionVo contractConclusion(Long insuranceId  ) {
+        Insurance insurance=insuranceDao.findById(insuranceId).get();
+        Contract contract=contractDao.findByInsuranceId(insurance);
+
+        contractDao.save(contract);
+
+      return PostContractConclusionVo.builder()
+              .message("계약서 작성이 완료되었습니다. 인수 심사 후 최종 가입 여부가 결정됩니다.")
+              .build();
+
     }
 
-    @Override
-    public PostContractVo contract(Long insuranceId) {
-        Optional<Insurance> insurance=insuranceDao.findById(insuranceId);
-
-        insuranceDao.save(insurance.get());
-        return PostContractVo.builder()
-                .message("")
-                .build();
-    }
+//    @Override
+//    public PostContractVo contract(Long insuranceId) {
+//        Insurance insurance=insuranceDao.findById(insuranceId).get();
+//      Contract contract=contractDao.findByInsuranceId(insurance);
+//
+//
+//   contractDao.save(contract);
+//
+//        return PostContractVo.builder()
+//                .message("")
+//                .build();
+//    }
 }
 
 
