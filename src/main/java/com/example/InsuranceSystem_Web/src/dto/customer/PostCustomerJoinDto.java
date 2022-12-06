@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class PostCustomerJoinDto {
     @NotBlank(message = "고객 아이디를 입력해주세요.")
-    private String id;
+    private Long id;
 
     @NotBlank(message = "고객 이름을 입력해주세요.")
     private String name;

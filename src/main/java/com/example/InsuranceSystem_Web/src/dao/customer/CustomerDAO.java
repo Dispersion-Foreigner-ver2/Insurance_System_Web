@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository
-public interface CustomerDAO extends JpaRepository<Customer, Integer> {
+public interface CustomerDAO extends JpaRepository<Customer, Long> {
 }

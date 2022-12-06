@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostContractVo {
-    private String message;
+public class PostContractSearchVo {
+    private Long contractId;
+    private Long customerId;
+    private String customerName;
+    private Long customerInsuranceId;
+    private String customerInsuranceName;
+
 }
