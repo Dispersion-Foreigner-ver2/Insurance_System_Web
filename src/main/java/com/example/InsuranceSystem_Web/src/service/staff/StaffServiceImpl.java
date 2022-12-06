@@ -70,9 +70,6 @@ public class StaffServiceImpl implements StaffService {
                 .build();
 
         Staff joinStaff = staffDAO.save(createStaff);
-        System.out.println(joinStaff.getBasicSalary());
-        System.out.println(joinStaff.getTotalSalary());
-
         return PostStaffVo.builder()
                 .staffId(joinStaff.getId())
                 .staffName(joinStaff.getName())
@@ -206,93 +203,5 @@ public class StaffServiceImpl implements StaffService {
 
 //        최종 월급 = 기본 월급(basicSalary) + 근무일수(count) / 365 * x + 판매 실적(result) * y
     }
-
-
-//    public Staff login(PostStaffLoginDto postStaffLoginDto) throws Exception {
-//        if (!postStaffLoginDto.getStaffId().matches("^[0-9]+$")) {
-//            throw new StaffException(StaffExceptionType.WRONG_TYPE_INPUT);
-//        }
-//        Long staffId = Long.parseLong(postStaffLoginDto.getStaffId());
-//        Staff loginStaff = staffDAO.get(staffId);
-//        if (loginStaff != null) {
-//            if (postStaffLoginDto.getPassword().equals(loginStaff.getPassword())) {
-//                return loginStaff;
-//            } else {
-//                throw new StaffException(StaffExceptionType.NOT_FOUND_STAFF);
-//            }
-//        }else {
-//            throw new StaffException(StaffExceptionType.NOT_FOUND_STAFF);
-//        }
-//
-//    }
-
-
-
-//    public boolean createStaff(PostStaffJoinDto postStaffJoinDto) throws Exception {
-//
-//        Staff createdStaff = new Staff();
-//
-//        if (!postStaffJoinDto.getId().matches("^[0-9]+$")) {
-//            throw new StaffException(StaffExceptionType.WRONG_TYPE_INPUT);
-//        }
-//
-//        Long staffId = Long.parseLong(postStaffJoinDto.getId());
-//
-//        createdStaff.setId(staffId);
-//        createdStaff.setPassword(postStaffJoinDto.getPw());
-//
-//        createdStaff.setDepartment(postStaffJoinDto.getDepartment());
-//        createdStaff.setPosition(postStaffJoinDto.getPosition());
-//
-//        createdStaff.setName(postStaffJoinDto.getName());
-//        createdStaff.setSSN(postStaffJoinDto.getSSN());
-//
-//        createdStaff.setGender(postStaffJoinDto.isGender());
-//        createdStaff.setEmail(postStaffJoinDto.getEMail());
-//        createdStaff.setPhoneNum(postStaffJoinDto.getPhoneNum());
-//        createdStaff.setJoinDate(LocalDate.now());
-//
-//
-//
-////        createdStaff.setBasicSalary(createdStaff.getPosition().getSalary());
-////        createdStaff.setResult(0);
-////        createdStaff.setTotalSalary(createdStaff.getPosition().getSalary());
-//
-//        if (staffDAO.add(createdStaff)) {
-//            return true;
-//        } else {
-//            throw new StaffException(StaffExceptionType.WRONG_JOIN_STAFF);
-//        }
-//
-//
-//
-//    }
-
-//
-//    public boolean updateDepartment(long staffId, Department department) {
-//        Staff staff = staffDAO.get(staffId);
-//        if (staff == null) {
-//            return false;
-//        }
-//        staff.setDepartment(department);
-//        staffDAO.update(staff);
-//        return true;
-//    }
-//
-
-//
-//
-
-//
-//    public boolean changePosition(Staff staff, Position position, Staff loginStaff) {
-//        staff.setPosition(position);
-//        if (this.staffDAO.update(staff)) {
-//            this.calculateSalary(staff.getId(), loginStaff);
-//            return true;
-//        }
-//        return false;
-//    }
-
-
 
 }

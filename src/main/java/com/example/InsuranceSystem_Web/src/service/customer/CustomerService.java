@@ -19,7 +19,7 @@ public class CustomerService {
     public void join(PostCustomerJoinDto postCustomerJoinDto) {
         Customer customer = new Customer();
 
-        int customerId = Integer.parseInt(postCustomerJoinDto.getId());
+        Long customerId = postCustomerJoinDto.getId();
         customer.setId(customerId);
         customer.setName(postCustomerJoinDto.getName());
         customer.setSSN(postCustomerJoinDto.getSsn());
