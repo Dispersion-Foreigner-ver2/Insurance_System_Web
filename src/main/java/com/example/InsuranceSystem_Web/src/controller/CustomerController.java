@@ -15,12 +15,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.naming.Binding;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @Api(tags ="4. customer API ")
 @Slf4j
 public class CustomerController {

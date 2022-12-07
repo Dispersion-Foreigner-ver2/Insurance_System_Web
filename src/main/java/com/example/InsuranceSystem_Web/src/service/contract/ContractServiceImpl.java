@@ -14,6 +14,8 @@ import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.SeaInsurance;
+import com.example.InsuranceSystem_Web.src.exception.contract.*;
+import com.example.InsuranceSystem_Web.src.exception.insurance.EmptyInsuranceException;
 import com.example.InsuranceSystem_Web.src.vo.contract.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,23 +71,19 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public Object getContractList() {
+    public List<Contract> getContractList() {
         List<Contract> contractList = contractDao.findAll();
         return contractList;
     }
 
     @Override
-    public Object contractSearchAll(Long customerId) {
+    public List<GetContractSearchVo> contractSearchAll(Long customerId) {
 
         List<GetContractSearchVo> getContractSearchVos = new ArrayList<>();
 
         Optional<Customer> customer = customerDAO.findById(customerId);
         if(customer.isEmpty()){
-            GetContractSearchVo getContractSearchVo = GetContractSearchVo.builder()
-                    .message("존재하지 않는 고객입니다.")
-                    .build();
-            getContractSearchVos.add(getContractSearchVo);
-            return getContractSearchVos;
+            throw new NotFoundCustomerException();
         }
 
         List<Contract> contractList = contractDao.findByCustomer(customer.get());
@@ -103,24 +101,20 @@ public class ContractServiceImpl implements ContractService{
     public GetContractSearchVo contractSearch(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract.isEmpty()){
-            return GetContractSearchVo.builder()
-                    .message("존재하지 않는 계약입니다.")
-                    .build();
+            throw new NotFoundContractException();
         }
         return GetContractSearchVo.of(contract.get());
     }
 
     @Override
     public DeleteContractTerminateVo contractTerminate(Long contractId) {
-        Contract contract = contractDao.findById(contractId).get();
-        if(contract!=null){
-            return DeleteContractTerminateVo.builder()
-                    .message("존재하지 않는 계약입니다.")
-                    .build();
+        Optional<Contract> contract = contractDao.findById(contractId);
+        if(contract.isEmpty()){
+            throw new NotFoundContractException();
         }
 
-        String name = contract.getInsurance().getName();
-        contractDao.delete(contract);
+        String name = contract.get().getInsurance().getName();
+        contractDao.delete(contract.get());
 
         return DeleteContractTerminateVo.builder()
                 .message(name+"보험 계약 해지가 완료되었습니다.")
@@ -131,14 +125,12 @@ public class ContractServiceImpl implements ContractService{
     @Override
     @Transactional
     public PostContractConclusionVo contractConclusion(PostContractDto postContractDto) {
-        Insurance insurance = insuranceDao.findById(postContractDto.getInsuranceId()).get();
-        if(insurance == null){
-            return PostContractConclusionVo.builder()
-                    .message("입력하신 ID의 보험을 찾을 수 없습니다. 다시 시도해 주세요.")
-                    .build();
+        Optional<Insurance> insurance = insuranceDao.findById(postContractDto.getInsuranceId());
+        if(insurance.isEmpty()){
+            throw new EmptyInsuranceException();
         }
 
-        int money = getMoney(insurance);
+        int money = getMoney(insurance.get());
         Customer customer = saveCustomer(postContractDto);
         saveMedicalHistory(customer,postContractDto);
 
@@ -152,13 +144,13 @@ public class ContractServiceImpl implements ContractService{
 
         Contract contract = Contract.builder()
                 .insurancePrice(money)
-                .premiumRate(insurance.getPremium())
+                .premiumRate(insurance.get().getPremium())
                 .compensationAmount(0)
                 .contractDate(LocalDate.now())
                 .underWrite(false)
                 .pay(false)
                 .customer(customer)
-                .insurance(insurance)
+                .insurance(insurance.get())
                 .build();
         contractDao.save(contract);
 
@@ -267,12 +259,8 @@ public class ContractServiceImpl implements ContractService{
         List<GetUnderWriteVo> arr = new ArrayList<>();
 
         Optional<Customer> customer = customerDAO.findById(customerId);
-        if(customer == null){
-            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
-                    .message("해당 고객이 존재하지 않습니다.")
-                    .build();
-            arr.add(getUnderWriteDto);
-            return arr;
+        if(customer.isEmpty()){
+            throw new NotFoundCustomerException();
         }
         List<Contract> contract = contractDao.findByCustomer(customer.get());
         if(contract.size() == 0){
@@ -295,11 +283,8 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public GetUnderWriteVo getUnderWrite(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
-        if(contract == null){
-            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
-                    .message("해당 계약이 존재하지 않습니다.")
-                    .build();
-            return getUnderWriteDto;
+        if(contract.isEmpty()){
+            throw new NotFoundContractException();
         }
         GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get());
         return getUnderWriteDto;
@@ -308,10 +293,8 @@ public class ContractServiceImpl implements ContractService{
     @Override
     public UpdateUnderWriteVo updateUnderWrite(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
-        if(contract == null){
-            return UpdateUnderWriteVo.builder()
-                    .message("해당 계약이 존재하지 않습니다.")
-                    .build();
+        if(contract.isEmpty()){
+            throw new NotFoundContractException();
         }
 
         // 예외 처리 하기
