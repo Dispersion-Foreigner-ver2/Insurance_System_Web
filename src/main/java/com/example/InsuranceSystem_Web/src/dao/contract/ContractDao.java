@@ -13,4 +13,7 @@ public interface ContractDao extends JpaRepository<Contract, Long> {
     List<Contract> findByCustomer(Customer customer);
 
     Contract findByInsuranceId(Insurance insurance);
+
+    List<Contract> findByCustomerId(Long id);
+
 }

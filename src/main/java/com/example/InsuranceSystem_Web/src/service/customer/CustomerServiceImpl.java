@@ -2,23 +2,75 @@ package com.example.InsuranceSystem_Web.src.service.customer;
 
 import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDao;
 import com.example.InsuranceSystem_Web.src.dao.customer.MedicalHistoryDao;
-import com.example.InsuranceSystem_Web.src.dto.customer.PostCustomerJoinDto;
-import com.example.InsuranceSystem_Web.src.dto.customer.PostCustomerJoinRes;
-import com.example.InsuranceSystem_Web.src.entity.customer.*;
-import com.example.InsuranceSystem_Web.src.entity.customer.enums.Disease;
+import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
+import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
+import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerCountVo;
+import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerVo;
+import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CustomerServiceImpl implements CustomerService{
+@Slf4j
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDAO;
     private final MedicalHistoryDao medicalHistoryDao;
+    private final InsuranceDao insuranceDao;
+
+
+    @Override
+    public GetCustomerCountVo readCustomerCount() {
+        List<Customer> customerList = customerDAO.findAll();
+
+        int ThisMonthCustomerCount = 0;
+        int ThisMonthNotPayCustomerCount = 0;
+
+        if (customerList.size() != 0) {
+            for (int i = 0; i < customerList.size(); i++) {
+                if (customerList.get(i).getId() != null) ThisMonthCustomerCount++;
+                else ThisMonthNotPayCustomerCount++;
+            }
+        }
+
+        return GetCustomerCountVo.builder()
+                .TotalCustomerCount(customerList.size())
+                .ThisMonthCustomerCount(ThisMonthCustomerCount)
+                .ThisMonthNotPayCustomerCount(ThisMonthNotPayCustomerCount)
+                .build();
+    }
+
+    @Override
+    public List<GetCustomerVo> readDetailCustomer() {
+        List<Customer> customerList = customerDAO.findAll();
+        List<Insurance> insuranceList = insuranceDao.findAll();
+        List<GetCustomerVo> getCustomerVoList = new ArrayList<>();
+
+        for (int i = 0; i < customerList.size(); i++) {
+            GetCustomerVo getCustomerVo = GetCustomerVo.builder()
+                    .customerId(customerList.get(i).getId())
+                    .ssn(customerList.get(i).getSSN())
+                    .address(customerList.get(i).getAddress())
+                    .phoneNumber(customerList.get(i).getPhoneNumber())
+                    .insuranceName(insuranceList.get(i).getName())
+                    .build();
+
+            getCustomerVoList.add(getCustomerVo);
+        }
+        return getCustomerVoList;
+
+
+    }
+
 
 
 //    public ArrayList<Customer> getTotalCustomer() {

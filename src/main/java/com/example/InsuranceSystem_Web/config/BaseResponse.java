@@ -32,12 +32,6 @@ public class BaseResponse<T> {
         this.result = result;
     }
 
-    public BaseResponse(BaseException e){
-        this.code = e.getCode();
-        this.httpStatus = e.getHttpStatus();
-        this.message = e.getMessage();
-    }
-
     // 요청 실패
     public BaseResponse(int code, HttpStatus httpStatus, String message){
         this.code = code;

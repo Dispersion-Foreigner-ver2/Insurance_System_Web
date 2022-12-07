@@ -1,6 +1,7 @@
 package com.example.InsuranceSystem_Web.src.service.contract;
 
 import com.example.InsuranceSystem_Web.src.dto.contract.*;
+import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
 import com.example.InsuranceSystem_Web.src.vo.contract.*;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.List;
 public interface ContractService {
 
     List<PostContractManageVo> contractManage();
-    Object getContractList();
+    List<Contract> getContractList();
 
-    Object contractSearchAll(Long customerId);
+    List<GetContractSearchVo> contractSearchAll(Long customerId);
     GetContractSearchVo contractSearch(Long contractId);
 
     DeleteContractTerminateVo contractTerminate(Long contractId);
