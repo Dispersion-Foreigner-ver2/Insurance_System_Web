@@ -21,7 +21,6 @@ public interface ContractService {
     List<GetUnderWriteVo> getUnderWrites(Long customerId);
     GetUnderWriteVo getUnderWrite(Long contractId);
 
-
-    Object updateUnderWrite(Long contractId);
+    UpdateUnderWriteVo updateUnderWrite(Long contractId);
 
 }

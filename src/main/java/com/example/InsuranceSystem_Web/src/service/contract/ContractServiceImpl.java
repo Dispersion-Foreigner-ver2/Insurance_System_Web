@@ -91,13 +91,7 @@ public class ContractServiceImpl implements ContractService{
         List<Contract> contractList = contractDao.findByCustomer(customer.get());
         if(contractList.size() !=0){
             for(int i=0; i<contractList.size(); i++){
-                GetContractSearchVo getContractSearchVo = GetContractSearchVo.builder()
-                        .contractId(contractList.get(i).getContractId())
-                        .customerId(customer.get().getId())
-                        .customerName(customer.get().getName())
-                        .customerInsuranceId(contractList.get(i).getInsurance().getId())
-                        .customerInsuranceName(contractList.get(i).getInsurance().getName())
-                        .build();
+                GetContractSearchVo getContractSearchVo = GetContractSearchVo.of(contractList.get(i));
                 getContractSearchVos.add(getContractSearchVo);
             }
         }
@@ -113,14 +107,7 @@ public class ContractServiceImpl implements ContractService{
                     .message("존재하지 않는 계약입니다.")
                     .build();
         }
-
-        return GetContractSearchVo.builder()
-                .contractId(contract.get().getContractId())
-                .customerId(contract.get().getCustomer().getId())
-                .customerName(contract.get().getCustomer().getName())
-                .customerInsuranceId(contract.get().getInsurance().getId())
-                .customerInsuranceName(contract.get().getInsurance().getName())
-                .build();
+        return GetContractSearchVo.of(contract.get());
     }
 
     @Override
@@ -319,7 +306,7 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public Object updateUnderWrite(Long contractId) {
+    public UpdateUnderWriteVo updateUnderWrite(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract == null){
             return UpdateUnderWriteVo.builder()
