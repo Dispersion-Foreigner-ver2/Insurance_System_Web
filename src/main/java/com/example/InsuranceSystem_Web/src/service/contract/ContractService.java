@@ -1,5 +1,6 @@
 package com.example.InsuranceSystem_Web.src.service.contract;
 
+import com.example.InsuranceSystem_Web.src.dto.contract.*;
 import com.example.InsuranceSystem_Web.src.vo.contract.*;
 
 import java.util.List;
@@ -7,13 +8,20 @@ import java.util.List;
 
 public interface ContractService {
 
-List<PostContractManageVo> contractManage( );
+    List<PostContractManageVo> contractManage();
+    Object getContractList();
 
-    PostContractSearchVo contractSearch(Long customerId);
+    Object contractSearchAll(Long customerId);
+    GetContractSearchVo contractSearch(Long contractId);
 
-    PostContractTerminateVo contractTerminate(Long contractId);
+    DeleteContractTerminateVo contractTerminate(Long contractId);
+    PostContractConclusionVo contractConclusion(PostContractDto insuranceId);
 
-    PostContractConclusionVo contractConclusion( Long insuranceId  );
+    List<GetUnderWriteVo> getUnderWriteAll();
+    List<GetUnderWriteVo> getUnderWrites(Long customerId);
+    GetUnderWriteVo getUnderWrite(Long contractId);
 
-//    PostContractVo contract(Long insuranceId);
+
+    Object updateUnderWrite(Long contractId);
+
 }

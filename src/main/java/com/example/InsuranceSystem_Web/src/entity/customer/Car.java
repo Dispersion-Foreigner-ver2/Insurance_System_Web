@@ -1,16 +1,19 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Car {
 
   @Id
   @Column(name = "car_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int carId;
 
   private int carNum;

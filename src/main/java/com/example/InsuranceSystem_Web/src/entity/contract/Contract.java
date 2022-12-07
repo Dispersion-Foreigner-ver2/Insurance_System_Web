@@ -6,11 +6,14 @@ import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Contract {
 
@@ -21,9 +24,9 @@ public class Contract {
 
 	private int insurancePrice;
 	private int premiumRate; // 보험 요율
-	private double compensationAmount; // 보상액
+	private double compensationAmount; // 보상액 - false
 
-	private Date contractDate;
+	private LocalDate contractDate;
 	private boolean underWrite; // 인수 심사  - false
 	private boolean pay; // 보상 유무 - false
 

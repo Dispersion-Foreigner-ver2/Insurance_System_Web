@@ -10,7 +10,7 @@ import java.util.List;
 public interface ContractDao extends JpaRepository<Contract, Long> {
     List<Contract> findByInsuranceId(Long id);
 
-    Contract findByCustomer(Customer customer);
+    List<Contract> findByCustomer(Customer customer);
 
     Contract findByInsuranceId(Insurance insurance);
 }

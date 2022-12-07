@@ -14,5 +14,5 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class PostContractConclusionVo {
     private String message;
-    private Insurance insurance;
+    private Long contractId;
 }

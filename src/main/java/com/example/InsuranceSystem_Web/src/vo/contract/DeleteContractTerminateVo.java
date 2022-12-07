@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostContractSearchVo {
-    private Long contractId;
-    private Long customerId;
-    private String customerName;
-    private Long customerInsuranceId;
-    private String customerInsuranceName;
-
+public class DeleteContractTerminateVo {
+    private String message;
+    private LocalDate localDate;
 }
