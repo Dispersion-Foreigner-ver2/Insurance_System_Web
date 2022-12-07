@@ -21,19 +21,11 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
+@Api(tags ="4. customer API ")
 @Slf4j
 public class CustomerController {
 
     private final CustomerService customerService;
-
-    /**
-     * 보험가입자를 관리한다.
-     * - 고객 가입하다.
-    * */
-    @GetMapping("/customer/join")
-    public ResponseEntity<?> customerJoin(@Valid PostCustomerJoinDto postCustomerJoinDto){
-        return ResponseEntity.ok(new BaseResponse(customerService.join(postCustomerJoinDto)));
-    }
 
     /**
      * 보험가입자를 관리한다.

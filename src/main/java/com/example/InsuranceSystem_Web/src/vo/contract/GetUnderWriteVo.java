@@ -1,6 +1,7 @@
 package com.example.InsuranceSystem_Web.src.vo.contract;
 
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @Getter
@@ -8,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class GetUnderWriteVo {
+    @ApiModelProperty(example = "--님의 인수 심사 현황")
     private String message;
 
     private Long contractId;

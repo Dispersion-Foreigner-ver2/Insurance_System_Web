@@ -20,52 +20,6 @@ public class CustomerServiceImpl implements CustomerService{
     private final CustomerDao customerDAO;
     private final MedicalHistoryDao medicalHistoryDao;
 
-    @Override
-    @Transactional
-    public Object join(PostCustomerJoinDto postCustomerJoinDto) {
-        Optional<Customer> checkCustomer = customerDAO.findById(postCustomerJoinDto.getId());
-        if(!checkCustomer.isEmpty()){
-            return PostCustomerJoinRes.builder()
-                    .message("이미 존재하는 Id입니다. 다시 확인해 주세요.")
-                    .build();
-        }
-
-        boolean sex = false;
-        if (postCustomerJoinDto.getCustomerSex()== 1) {
-            sex = true;
-        }
-
-        Customer customer =Customer.builder()
-                .id(postCustomerJoinDto.getId())
-                .name(postCustomerJoinDto.getName())
-                .SSN(postCustomerJoinDto.getSsn())
-                .address(postCustomerJoinDto.getAddress())
-                .phoneNumber(postCustomerJoinDto.getPhoneNum())
-                .email(postCustomerJoinDto.getEmail())
-                .account(postCustomerJoinDto.getAccount())
-                .joinDate(LocalDate.now())
-                .sex(sex)
-                .build();
-        customerDAO.save(customer);
-
-        boolean cureComplete = false;  // 치료 유무
-        if(postCustomerJoinDto.getCureComplete() == 1){
-            cureComplete = true;
-        }
-
-        MedicalHistory medicalHistory = MedicalHistory.builder()
-                .cureComplete(cureComplete)
-                .historyYear(postCustomerJoinDto.getHistoryYear())
-                .MyDisease(Disease.values()[postCustomerJoinDto.getDiseaseNum() - 1])
-                .customer(customer)
-                .build();
-        medicalHistoryDao.save(medicalHistory);
-
-        return PostCustomerJoinRes.builder()
-                .message("고객이 등록되었습니다.")
-                .build();
-    }
-
 
 //    public ArrayList<Customer> getTotalCustomer() {
 //        return this.customerDAO.getCustomerList();
