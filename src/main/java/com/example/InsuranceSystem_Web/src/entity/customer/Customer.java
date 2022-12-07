@@ -1,47 +1,22 @@
 package com.example.InsuranceSystem_Web.src.entity.customer;
 
 
-import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
-import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.InsuranceSystem_Web.src.entity.customer.enums.Job;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Customer {
-
-
-
-	public static enum Job {
-		영업직(70, false),
-		생산직(60, true),
-		사무직(75, false),
-		자영업자(70, true),
-		무직(30, false);
-
-		private int maxAge;
-		private boolean danger;
-
-		private Job(int maxAge, boolean danger) {
-			this.maxAge = maxAge;
-			this.danger = danger;
-		}
-
-		public int getMaxAge() {
-			return this.maxAge;
-		}
-
-		public boolean isDanger() {
-			return this.danger;
-		}
-	}
 
 	@Id
 	@Column(name = "customer_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "customer_age")
@@ -60,10 +35,6 @@ public class Customer {
 	@Column(name = "customer_job")
 	private Job job;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "medicalHistory_id")
-	private MedicalHistory medicalHistory;
-
 	@Column(name = "customer_name")
 	private String name;
 
@@ -78,15 +49,5 @@ public class Customer {
 
 	@Column(name = "customer_joinDate")
 	private LocalDate joinDate;
-
-
-
-
-
-
-
-
-
-
 
 }

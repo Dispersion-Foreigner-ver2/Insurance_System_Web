@@ -1,32 +1,44 @@
 package com.example.InsuranceSystem_Web.src.service.contract;
 
 import com.example.InsuranceSystem_Web.src.dao.contract.ContractDao;
-import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDAO;
+import com.example.InsuranceSystem_Web.src.dao.customer.*;
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
+import com.example.InsuranceSystem_Web.src.dto.contract.*;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
-import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
+import com.example.InsuranceSystem_Web.src.entity.customer.*;
+import com.example.InsuranceSystem_Web.src.entity.customer.enums.Disease;
+import com.example.InsuranceSystem_Web.src.entity.customer.enums.HouseType;
+import com.example.InsuranceSystem_Web.src.entity.customer.enums.Job;
+import com.example.InsuranceSystem_Web.src.entity.customer.enums.ShipType;
 import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
+import com.example.InsuranceSystem_Web.src.entity.insurance.SeaInsurance;
 import com.example.InsuranceSystem_Web.src.vo.contract.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ContractServiceImpl implements ContractService{
 
+    private final ContractDao contractDao;
+
     private final InsuranceDao insuranceDao;
 
-    private final CustomerDAO customerDAO;
-    private final ContractDao contractDao;
+    private final CustomerDao customerDAO;
+    private final MedicalHistoryDao medicalHistoryDao;
+    private final HouseDao houseDao;
+    private final CarDao carDao;
+    private final ShipDao shipDao;
 
     @Override
     public List<PostContractManageVo> contractManage( ) {
@@ -57,64 +69,274 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public PostContractSearchVo contractSearch(Long customerId) {
-        Customer customer= customerDAO.findById(customerId).get();
-        Contract contract=contractDao.findByCustomer(customer);
+    public Object getContractList() {
+        List<Contract> contractList = contractDao.findAll();
+        return contractList;
+    }
 
-        if(customer!=contract.getCustomer()){
+    @Override
+    public Object contractSearchAll(Long customerId) {
 
+        List<GetContractSearchVo> getContractSearchVos = new ArrayList<>();
+
+        Optional<Customer> customer = customerDAO.findById(customerId);
+        if(customer.isEmpty()){
+            GetContractSearchVo getContractSearchVo = GetContractSearchVo.builder()
+                    .message("존재하지 않는 고객입니다.")
+                    .build();
+            getContractSearchVos.add(getContractSearchVo);
+            return getContractSearchVos;
         }
 
-        return PostContractSearchVo.builder()
-                .contractId(contract.getContractId())
-                .customerId(customer.getId())
-                .customerName(customer.getName())
-                .customerInsuranceId(contract.getInsurance().getId())
-                .customerInsuranceName(contract.getInsurance().getName())
+        List<Contract> contractList = contractDao.findByCustomer(customer.get());
+        if(contractList.size() !=0){
+            for(int i=0; i<contractList.size(); i++){
+                GetContractSearchVo getContractSearchVo = GetContractSearchVo.builder()
+                        .contractId(contractList.get(i).getContractId())
+                        .customerId(customer.get().getId())
+                        .customerName(customer.get().getName())
+                        .customerInsuranceId(contractList.get(i).getInsurance().getId())
+                        .customerInsuranceName(contractList.get(i).getInsurance().getName())
+                        .build();
+                getContractSearchVos.add(getContractSearchVo);
+            }
+        }
+
+        return getContractSearchVos;
+    }
+
+    @Override
+    public GetContractSearchVo contractSearch(Long contractId) {
+        Optional<Contract> contract = contractDao.findById(contractId);
+        if(contract.isEmpty()){
+            return GetContractSearchVo.builder()
+                    .message("존재하지 않는 계약입니다.")
+                    .build();
+        }
+
+        return GetContractSearchVo.builder()
+                .contractId(contract.get().getContractId())
+                .customerId(contract.get().getCustomer().getId())
+                .customerName(contract.get().getCustomer().getName())
+                .customerInsuranceId(contract.get().getInsurance().getId())
+                .customerInsuranceName(contract.get().getInsurance().getName())
                 .build();
     }
 
     @Override
-    public PostContractTerminateVo contractTerminate(Long contractId) {
-        Contract contract=contractDao.findById(contractId).get();
-
+    public DeleteContractTerminateVo contractTerminate(Long contractId) {
+        Contract contract = contractDao.findById(contractId).get();
         if(contract!=null){
-            contract.setContractDate(Date.from(Instant.now()));
-
+            return DeleteContractTerminateVo.builder()
+                    .message("존재하지 않는 계약입니다.")
+                    .build();
         }
+
+        String name = contract.getInsurance().getName();
         contractDao.delete(contract);
 
-        return PostContractTerminateVo.builder()
-                .message("보험 계약 해지가 완료되었습니다.")
-//                .contractId(contract.getContractId())
+        return DeleteContractTerminateVo.builder()
+                .message(name+"보험 계약 해지가 완료되었습니다.")
+                .localDate(LocalDate.now())
                 .build();
     }
 
     @Override
-    public PostContractConclusionVo contractConclusion(Long insuranceId  ) {
-        Insurance insurance=insuranceDao.findById(insuranceId).get();
-        Contract contract=contractDao.findByInsuranceId(insurance);
+    @Transactional
+    public PostContractConclusionVo contractConclusion(PostContractDto postContractDto) {
+        Insurance insurance = insuranceDao.findById(postContractDto.getInsuranceId()).get();
+        if(insurance == null){
+            return PostContractConclusionVo.builder()
+                    .message("입력하신 ID의 보험을 찾을 수 없습니다. 다시 시도해 주세요.")
+                    .build();
+        }
 
+        int money = getMoney(insurance);
+        Customer customer = saveCustomer(postContractDto);
+        saveMedicalHistory(customer,postContractDto);
+
+        if(postContractDto instanceof PostCarContractDto){
+            saveCar(customer, (PostCarContractDto) postContractDto);
+        }else if(postContractDto instanceof PostSeaContractDto){
+            saveShip(customer, (PostSeaContractDto) postContractDto);
+        }else if(postContractDto instanceof PostFireContractDto){
+            saveHouse(customer, (PostFireContractDto) postContractDto);
+        }
+
+        Contract contract = Contract.builder()
+                .insurancePrice(money)
+                .premiumRate(insurance.getPremium())
+                .compensationAmount(0)
+                .contractDate(LocalDate.now())
+                .underWrite(false)
+                .pay(false)
+                .customer(customer)
+                .insurance(insurance)
+                .build();
         contractDao.save(contract);
 
       return PostContractConclusionVo.builder()
               .message("계약서 작성이 완료되었습니다. 인수 심사 후 최종 가입 여부가 결정됩니다.")
+              .contractId(contract.getContractId())
               .build();
-
     }
 
-//    @Override
-//    public PostContractVo contract(Long insuranceId) {
-//        Insurance insurance=insuranceDao.findById(insuranceId).get();
-//      Contract contract=contractDao.findByInsuranceId(insurance);
-//
-//
-//   contractDao.save(contract);
-//
-//        return PostContractVo.builder()
-//                .message("")
-//                .build();
-//    }
+    private int getMoney(Insurance insurance) {
+        int money = 0;
+        if (insurance instanceof CarInsurance) {
+            money = ((CarInsurance) insurance).getCarDamageBasicMoney() + ((CarInsurance) insurance).getHumanDamageBasicMoney();
+        } else if (insurance instanceof FireInsurance) {
+            money = ((FireInsurance) insurance).getBuildingDamageBasicMoney()
+                    +((FireInsurance) insurance).getHumanDamageBasicMoney()
+                    +((FireInsurance) insurance).getSurroundingDamageBasicMoney();
+        } else if (insurance instanceof SeaInsurance) {
+            money = ((SeaInsurance) insurance).getGeneralDamageBasicMoney() + ((SeaInsurance) insurance).getRevenueDamageBasicMoney();
+        }
+        return money;
+    }
+
+    private Customer saveCustomer(PostContractDto postContractDto) {
+        boolean sex = false;
+        if (postContractDto.getCustomerSex()== 1) {
+            sex = true;
+        }
+        Customer customer =Customer.builder()
+                .name(postContractDto.getName())
+                .SSN(postContractDto.getSsn())
+                .address(postContractDto.getAddress())
+                .phoneNumber(postContractDto.getPhoneNum())
+                .email(postContractDto.getEmail())
+                .job(Job.values()[postContractDto.getJob()-1])
+                .account(postContractDto.getAccount())
+                .joinDate(LocalDate.now())
+                .sex(sex)
+                .build();
+        customerDAO.save(customer);
+        return customer;
+    }
+
+    private void saveMedicalHistory(Customer customer, PostContractDto postContractDto) {
+        boolean cureComplete = false;  // 치료 유무
+        if(postContractDto.getCureComplete() == 1){
+            cureComplete = true;
+        }
+
+        MedicalHistory medicalHistory = MedicalHistory.builder()
+                .cureComplete(cureComplete)
+                .historyYear(postContractDto.getCustomerMedicalYear())
+                .MyDisease(Disease.values()[postContractDto.getDiseaseNum() - 1])
+                .customer(customer)
+                .build();
+        medicalHistoryDao.save(medicalHistory);
+    }
+
+    private void saveHouse(Customer customer, PostFireContractDto postContractDto) {
+        House house = House.builder()
+                .houseType(HouseType.values()[postContractDto.getHouseType()-1])
+                .price(postContractDto.getHousePrice())
+                .customer(customer)
+                .build();
+        houseDao.save(house);
+    }
+
+    private void saveShip(Customer customer, PostSeaContractDto postSeaContractDto){
+        Ship ship = Ship.builder()
+                .shipNum(postSeaContractDto.getShipNum())
+                .year(postSeaContractDto.getYear())
+                .price(postSeaContractDto.getPrice())
+                .shipType(ShipType.values()[postSeaContractDto.getShipType()-1])
+                .customer(customer)
+                .build();
+        shipDao.save(ship);
+    }
+
+    private void saveCar(Customer customer, PostCarContractDto postCarContractDto){
+        Car car = Car.builder()
+                .carNum(postCarContractDto.getCarNum())
+                .year(postCarContractDto.getYear())
+                .displacement(postCarContractDto.getDisplacement())
+                .price(postCarContractDto.getPrice())
+                .customer(customer)
+                .build();
+        carDao.save(car);
+    }
+
+    @Override
+    public List<GetUnderWriteVo> getUnderWriteAll() {
+        List<Contract> contract = contractDao.findAll();
+
+        List<GetUnderWriteVo> arr = new ArrayList<>();
+        if(contract.size()!=0){
+            for(int i=0; i<contract.size(); i++){
+                GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get(i));
+                arr.add(getUnderWriteDto);
+            }
+        }
+        return arr;
+    }
+
+    @Override
+    public List<GetUnderWriteVo> getUnderWrites(Long customerId) {
+        List<GetUnderWriteVo> arr = new ArrayList<>();
+
+        Optional<Customer> customer = customerDAO.findById(customerId);
+        if(customer == null){
+            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
+                    .message("해당 고객이 존재하지 않습니다.")
+                    .build();
+            arr.add(getUnderWriteDto);
+            return arr;
+        }
+        List<Contract> contract = contractDao.findByCustomer(customer.get());
+        if(contract.size() == 0){
+            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
+                    .message("해당 고객이 계약을 한 보험이 없습니다.")
+                    .build();
+            arr.add(getUnderWriteDto);
+            return arr;
+        }
+
+        if(contract.size()!=0){
+            for(int i=0; i<contract.size(); i++){
+                GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get(i));
+                arr.add(getUnderWriteDto);
+            }
+        }
+        return arr;
+    }
+
+    @Override
+    public GetUnderWriteVo getUnderWrite(Long contractId) {
+        Optional<Contract> contract = contractDao.findById(contractId);
+        if(contract == null){
+            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
+                    .message("해당 계약이 존재하지 않습니다.")
+                    .build();
+            return getUnderWriteDto;
+        }
+        GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get());
+        return getUnderWriteDto;
+    }
+
+    @Override
+    public Object updateUnderWrite(Long contractId) {
+        Optional<Contract> contract = contractDao.findById(contractId);
+        if(contract == null){
+            return UpdateUnderWriteVo.builder()
+                    .message("해당 계약이 존재하지 않습니다.")
+                    .build();
+        }
+
+        // 예외 처리 하기
+
+
+        contract.get().setUnderWrite(true);
+        contractDao.save(contract.get());
+
+        MedicalHistory medicalHistory = medicalHistoryDao.findByCustomer(contract.get().getCustomer());
+        return UpdateUnderWriteVo.of(contract.get(),medicalHistory);
+    }
+
 }
 
 
