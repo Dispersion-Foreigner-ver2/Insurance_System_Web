@@ -12,10 +12,11 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 public class PostFireContractDto extends PostContractDto {
-    @ApiParam(value = "건물 종류")
+    @ApiParam(value = "건물 종류", example = "0")
     @NotNull(message = "건물 종류를 입력하세요.")
     private int houseType;
-    @ApiParam(value = "건물 가격")
+
+    @ApiParam(value = "건물 가격", example = "0")
     @NotNull(message = "건물 가격을 입력하세요.")
     private int housePrice;
 }

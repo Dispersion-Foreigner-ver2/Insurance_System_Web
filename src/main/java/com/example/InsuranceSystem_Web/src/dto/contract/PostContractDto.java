@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 public class PostContractDto {
-    @ApiParam(value= "보험 ID")
+    @ApiParam(value= "보험 ID", example = "0")
     @NotNull(message = "계약을 진행 할 보험 ID를 입력해 주세요.")
     private Long insuranceId;
 
@@ -40,22 +40,28 @@ public class PostContractDto {
     @ApiParam(value = "계좌번호")
     @NotBlank(message = "고객의 계좌번호를 입력하세요.")
     private String account;
-    @ApiParam(value = "고객성별")
+
+    @ApiParam(value = "고객성별", example = "0")
     @NotNull(message = "고객의 성별을 입력하세요.")
     private int customerSex;
-    @ApiParam(value = "고객나이")
+
+    @ApiParam(value = "고객나이", example = "0")
     @NotNull(message = "고객의 나이를 입력하세요.")
     private int age;
-    @ApiParam(value = "고객직업")
+
+    @ApiParam(value = "고객직업", example = "0")
     @NotNull(message = "고객의 직업을 입력하세요.")
     private int job;
-    @ApiParam(value = "고객의 병력")
+
+    @ApiParam(value = "고객의 병력", example = "0")
     @NotNull(message = "고객의 병력을 입력하세요.")
     private int diseaseNum;
-    @ApiParam(value = "객의 병력 발병 년도")
+
+    @ApiParam(value = "객의 병력 발병 년도", example = "0")
     @NotNull(message = "고객의 병력 발병 년도를 입력하세요.")
     private int customerMedicalYear;
-    @ApiParam(value = "고객의 완치 여부")
+
+    @ApiParam(value = "고객의 완치 여부", example = "0")
     @NotNull(message = "고객의 완치 여부를 입력하세요.")
     public int cureComplete;
 
