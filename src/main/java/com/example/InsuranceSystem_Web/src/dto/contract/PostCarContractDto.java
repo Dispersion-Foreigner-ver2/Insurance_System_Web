@@ -10,16 +10,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostCarContractDto extends PostContractDto{
-    @ApiParam(value = "자동차 번호")
+    @ApiParam(value = "자동차 번호", example = "0")
     @ApiModelProperty(example = "123456")
     private int carNum;
+
     @ApiModelProperty(example = "2019")
-    @ApiParam(value = "자동차 연식")
+    @ApiParam(value = "자동차 연식", example = "0")
     private int year;
+
     @ApiModelProperty(example = "500")
-    @ApiParam(value = "자동차 배기량")
+    @ApiParam(value = "자동차 배기량", example = "0")
     private int displacement;
+
     @ApiModelProperty(example = "30000000")
-    @ApiParam(value = "자동차 가격")
+    @ApiParam(value = "자동차 가격", example = "0")
     private int price;
 }

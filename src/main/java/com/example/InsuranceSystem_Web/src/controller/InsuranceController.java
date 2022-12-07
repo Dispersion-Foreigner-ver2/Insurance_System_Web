@@ -2,14 +2,14 @@ package com.example.InsuranceSystem_Web.src.controller;
 
 import com.example.InsuranceSystem_Web.config.BaseResponse;
 import com.example.InsuranceSystem_Web.src.service.insurance.InsuranceService;
+import com.example.InsuranceSystem_Web.src.vo.insurance.DeleteInsuranceVo;
+import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceCountVo;
+import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceVo;
 import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceVo;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostCarInsuranceDto;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostSeaInsuranceDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,7 @@ public class InsuranceController {
             @ApiResponse(code = 200, message = "OK", response = PostInsuranceVo.class)
     })
     @PostMapping("/design/car")
-    public ResponseEntity<?> createInsuranceCar( @Valid PostCarInsuranceDto postCarInsuranceDto){
+    public ResponseEntity<?> createInsuranceCar(@Valid PostCarInsuranceDto postCarInsuranceDto){
         return ResponseEntity.ok(new BaseResponse(insuranceService.createInsuranceCar(postCarInsuranceDto)));
     }
 
@@ -65,6 +65,10 @@ public class InsuranceController {
      * 보험을 관리한다
      * -> 전체 보험을 나타 낸다. - 자사의 총 보험 개수, 자사의 인가받은 보험의 개수, 자사의 인가 받지 못한 보험의 개수
      * */
+    @ApiOperation(value = "보험을 관리한다 -> 전체 보험을 나타 낸다. - 자사의 총 보험 개수, 자사의 인가받은 보험의 개수, 자사의 인가 받지 못한 보험의 개수")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetInsuranceCountVo.class)
+    })
     @GetMapping("/count")
     public ResponseEntity<?> readInsuranceCount(){
         return ResponseEntity.ok(new BaseResponse(insuranceService.readInsuranceCount()));
@@ -74,8 +78,12 @@ public class InsuranceController {
     /**
      * 보험을 인가 받는다
      * */
+    @ApiOperation(value = "보험을 인가 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostInsuranceVo.class)
+    })
     @PostMapping("/auth")
-    public ResponseEntity<?> updateAuthorize(@RequestParam("id") Long insuranceId){
+    public ResponseEntity<?> updateAuthorize(@RequestParam("id") @ApiParam(value = "보험 아이디",example = "0")Long insuranceId){
         return ResponseEntity.ok(new BaseResponse(insuranceService.setAuthorize(insuranceId)));
     }
 
@@ -83,8 +91,12 @@ public class InsuranceController {
     /**
      * 보험을 삭제한다.
      * */
+    @ApiOperation(value = "보험을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = DeleteInsuranceVo.class)
+    })
     @DeleteMapping("delete")
-    public ResponseEntity<?> deleteInsurance(@RequestParam("id") Long insuranceId){
+    public ResponseEntity<?> deleteInsurance(@RequestParam("id") @ApiParam(value = "보험 아이디",example = "0")Long insuranceId){
         return ResponseEntity.ok(new BaseResponse(insuranceService.deleteInsurance(insuranceId)));
     }
 
@@ -94,6 +106,10 @@ public class InsuranceController {
      * - 전체 보험리스트를 나타 낸다.
      * http://localhost:8080/insurance/all
      * */
+    @ApiOperation(value = "보험을 관리한다 - 전체 보험리스트를 나타 낸다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetInsuranceVo.class)
+    })
     @GetMapping("/all")
     public ResponseEntity<?> readInsurance(){
         return ResponseEntity.ok(new BaseResponse(insuranceService.readInsurance()));
@@ -104,8 +120,12 @@ public class InsuranceController {
      * - 상세화면을 볼 수 있다.
      * http://localhost:8080/insurance?id=7
      * */
+    @ApiOperation(value = "보험을 관리한다 - 상세화면을 볼 수 있다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetInsuranceVo.class)
+    })
     @GetMapping("")
-    public ResponseEntity<?> readDetailInsurance(@RequestParam("id") Long insuranceId){
+    public ResponseEntity<?> readDetailInsurance(@RequestParam("id") @ApiParam(value = "보험 아이디",example = "0") Long insuranceId){
         return ResponseEntity.ok(new BaseResponse(insuranceService.readDetailInsurance(insuranceId)));
     }
 
