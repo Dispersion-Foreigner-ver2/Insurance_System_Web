@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/insurance")
 @Api(tags ="1. insurance API ")
 @Slf4j

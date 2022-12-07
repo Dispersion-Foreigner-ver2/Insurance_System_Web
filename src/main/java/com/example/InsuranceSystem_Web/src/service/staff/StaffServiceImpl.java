@@ -6,8 +6,7 @@ import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
 import com.example.InsuranceSystem_Web.src.entity.staff.Department;
 import com.example.InsuranceSystem_Web.src.entity.staff.Position;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
-import com.example.InsuranceSystem_Web.src.exception.staffException.StaffException;
-import com.example.InsuranceSystem_Web.src.exception.staffException.StaffExceptionType;
+import com.example.InsuranceSystem_Web.src.exception.staff.*;
 import com.example.InsuranceSystem_Web.src.vo.staff.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public PostStaffVo login(PostStaffLoginDto postStaffLoginDto) {
         if (!postStaffLoginDto.getStaffId().matches("^[0-9]+$")) {
-            return PostStaffVo.builder()
-                    .message(StaffExceptionType.WRONG_TYPE_INPUT.getErrorMessage())
-                    .build();
+            throw new WrongTypeInputException();
         }
         Long staffId = Long.parseLong(postStaffLoginDto.getStaffId());
         Staff loginStaff = staffDAO.findById(staffId).get();
@@ -39,16 +36,14 @@ public class StaffServiceImpl implements StaffService {
                     .department(loginStaff.getDepartment().getLabel())
                     .build();
         } else {
-            return PostStaffVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
     }
 
     @Override
     public PostStaffVo join(PostStaffJoinDto postStaffJoinDto) {
         if (!postStaffJoinDto.getId().matches("^[0-9]+$")) {
-            throw new StaffException(StaffExceptionType.WRONG_TYPE_INPUT);
+            throw new WrongTypeInputException();
         }
 
         Long staffId = Long.parseLong(postStaffJoinDto.getId());
@@ -100,9 +95,7 @@ public class StaffServiceImpl implements StaffService {
     public Object getStaff(long id) {
         Staff staff = staffDAO.findById(id).orElse(null);
         if(staff == null){
-            return BasicMessageVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
         return GetStaffDetailVo.builder()
                 .id(staff.getId())
@@ -119,9 +112,7 @@ public class StaffServiceImpl implements StaffService {
     public Object deleteStaff(long id) {
         Staff staff = staffDAO.findById(id).orElse(null);
         if(staff == null){
-            return BasicMessageVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
         staffDAO.delete(staff);
         return BasicMessageVo.builder()
@@ -133,9 +124,7 @@ public class StaffServiceImpl implements StaffService {
     public Object getSalary(long id) {
         Staff staff = staffDAO.findById(id).orElse(null);
         if(staff == null){
-            return BasicMessageVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
         calculateSalary(staff);
         return GetSalaryVo.builder()
@@ -150,9 +139,7 @@ public class StaffServiceImpl implements StaffService {
     public Object changePosition(long id, int position) {
         Staff staff = staffDAO.findById(id).orElse(null);
         if(staff == null){
-            return BasicMessageVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
         staff.setPosition(Position.values()[position-1]);
         staff.setBasicSalary(Position.values()[position-1].getSalary());
@@ -166,9 +153,7 @@ public class StaffServiceImpl implements StaffService {
     public Object changeDepartment(long id, int department) {
         Staff staff = staffDAO.findById(id).orElse(null);
         if(staff == null){
-            return BasicMessageVo.builder()
-                    .message(StaffExceptionType.NOT_FOUND_STAFF.getErrorMessage())
-                    .build();
+            throw new NotFoundStaffException();
         }
         staff.setDepartment(Department.values()[department-1]);
         staffDAO.save(staff);
