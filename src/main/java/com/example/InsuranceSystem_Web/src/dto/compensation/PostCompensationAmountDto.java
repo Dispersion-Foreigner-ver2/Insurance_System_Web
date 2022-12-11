@@ -14,12 +14,12 @@ import javax.validation.constraints.NotBlank;
 public class PostCompensationAmountDto {
 
     @NotBlank(message = "화재 장소 파손상태를 입력하세요.")
-    private String brokenState;
+    private String surroundingDamageBasicMoney;
 
     @NotBlank(message = "인적 피해를 입력하세요.")
-    private String humanDamage;
+    private String humanDamageBasicMoney;
 
     @NotBlank(message = "주변 피해 상태를 입력하세요.")
-    private String surroundingDamage;
+    private String buildingDamageBasicMoney;
 
 }

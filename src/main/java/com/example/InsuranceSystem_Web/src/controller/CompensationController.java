@@ -1,6 +1,8 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
 import com.example.InsuranceSystem_Web.config.BaseResponse;
+import com.example.InsuranceSystem_Web.src.dto.compensation.PostCompensationAmountDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.service.compensation.CompensationService;
 import com.example.InsuranceSystem_Web.src.service.customer.CustomerService;
@@ -36,9 +38,33 @@ public class CompensationController {
     }
 
     /**
-     * 고객 보상을 관리한다.
-     * - 이달의 보험료를 미납한 보험가입자의 수
+     * 면부책을 판단한다.
      * */
+//    @ApiOperation(value = "자동차 보험 면부책을 판단한다..")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
+//    })
+//    @PostMapping("/car")
+//    public ResponseEntity<?> cardisclaimer(  ){
+//        return ResponseEntity.ok(new BaseResponse(compensationService.cardisclaimer()));
+//    }
+//    @ApiOperation(value = "화재 보험 면부책을 판단한다..")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
+//    })
+//    @PostMapping("/car")
+//    public ResponseEntity<?> firedisclaimer(  ){
+//        return ResponseEntity.ok(new BaseResponse(compensationService.firedisclaimer()));
+//    }
+//    @ApiOperation(value = "해상 보험 면부책을 판단한다..")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
+//    })
+//    @PostMapping("/car")
+//    public ResponseEntity<?> seadisclaimer(  ){
+//        return ResponseEntity.ok(new BaseResponse(compensationService.seadisclaimer()));
+//    }
+
 
     /**
      * 보상액을 지급한다.
@@ -47,8 +73,8 @@ public class CompensationController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
     })
-    @PostMapping("/compensationAmount")
-    public ResponseEntity<?> compensationAmount(FireInsurance fireInsurance){
-        return ResponseEntity.ok(new BaseResponse(compensationService.compensationAmount(fireInsurance)));
+    @PostMapping("/pay")
+    public ResponseEntity<?> compensationAmount(PostFireInsuranceDto postFireInsuranceDto ){
+        return ResponseEntity.ok(new BaseResponse(compensationService.compensationAmount(postFireInsuranceDto)));
     }
 }

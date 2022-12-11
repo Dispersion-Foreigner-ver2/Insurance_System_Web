@@ -52,6 +52,14 @@ public class CustomerController {
     /**
      * 보험료를 납입받는다.
      * */
-
+//    @ApiOperation(value = "보험을 관리한다 - 상세화면을 볼 수 있다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = GetCustomerVo.class)
+//    })
+//    @GetMapping("/getPay")
+//    //@RequestParam("id") @ApiParam(value = "고객 아이디",example = "0") Long customerId
+//    public ResponseEntity<?> readDetailCustomer(){
+//        return ResponseEntity.ok(new BaseResponse(customerService.readDetailCustomer()));
+//    }
 
 }

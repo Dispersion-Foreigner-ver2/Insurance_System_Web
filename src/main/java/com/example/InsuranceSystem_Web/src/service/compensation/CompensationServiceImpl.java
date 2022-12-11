@@ -5,6 +5,7 @@ import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDao;
 import com.example.InsuranceSystem_Web.src.dao.insurance.FireInsuranceDao;
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
 import com.example.InsuranceSystem_Web.src.dto.compensation.PostCompensationAmountDto;
+import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
 import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
 import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
@@ -62,13 +63,9 @@ public class CompensationServiceImpl implements CompensationService {
     }
 
     @Override
-    public PostCompensationAmountVo compensationAmount(FireInsurance fireInsurance) {
-        return PostCompensationAmountVo.builder()
-                .humanDamage(fireInsurance.getHumanDamageBasicMoney())
-                .surroundingDamage(fireInsurance.getSurroundingDamageBasicMoney())
-                .brokenState(fireInsurance.getBuildingDamageBasicMoney())
-                .message("보상금을 계산하시겠습니까?")
-                .build();
+    public PostCompensationAmountVo compensationAmount(PostFireInsuranceDto postFireInsuranceDto ) {
+
+        return PostCompensationAmountVo.of(postFireInsuranceDto);
 
     }
 }
