@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostCarDisclaimer {
-//    private int
+public class PostCarDisclaimerDto {
+    private int subject;
+    private int carCause;
 }

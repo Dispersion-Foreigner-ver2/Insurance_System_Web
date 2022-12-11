@@ -1,12 +1,14 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
 import com.example.InsuranceSystem_Web.config.BaseResponse;
+import com.example.InsuranceSystem_Web.src.dto.compensation.PostCarDisclaimerDto;
 import com.example.InsuranceSystem_Web.src.dto.compensation.PostCompensationAmountDto;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.service.compensation.CompensationService;
 import com.example.InsuranceSystem_Web.src.service.customer.CustomerService;
 import com.example.InsuranceSystem_Web.src.vo.compensation.GetCompensationVo;
+import com.example.InsuranceSystem_Web.src.vo.compensation.PostCarDisclaimerVo;
 import com.example.InsuranceSystem_Web.src.vo.compensation.PostCompensationAmountVo;
 import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerCountVo;
 import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceVo;
@@ -40,13 +42,13 @@ public class CompensationController {
     /**
      * 면부책을 판단한다.
      * */
-//    @ApiOperation(value = "자동차 보험 면부책을 판단한다..")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
-//    })
-//    @PostMapping("/car")
-//    public ResponseEntity<?> cardisclaimer(  ){
-//        return ResponseEntity.ok(new BaseResponse(compensationService.cardisclaimer()));
+    @ApiOperation(value = "자동차 보험 면부책을 판단한다..")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostCarDisclaimerVo.class)
+    })
+    @PostMapping("/car")
+    public ResponseEntity<?> carDisclaimer(PostCarDisclaimerDto postCarDisclaimerDto){
+        return ResponseEntity.ok(new BaseResponse(compensationService.carDisclaimer(postCarDisclaimerDto)));
 //    }
 //    @ApiOperation(value = "화재 보험 면부책을 판단한다..")
 //    @ApiResponses({
@@ -69,12 +71,12 @@ public class CompensationController {
     /**
      * 보상액을 지급한다.
      * */
-    @ApiOperation(value = "보상액을 지급한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
-    })
-    @PostMapping("/pay")
-    public ResponseEntity<?> compensationAmount(PostFireInsuranceDto postFireInsuranceDto ){
-        return ResponseEntity.ok(new BaseResponse(compensationService.compensationAmount(postFireInsuranceDto)));
+//    @ApiOperation(value = "보상액을 지급한다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = PostCompensationAmountVo.class)
+//    })
+//    @PostMapping("/pay")
+//    public ResponseEntity<?> compensationAmount(PostFireInsuranceDto postFireInsuranceDto ){
+//        return ResponseEntity.ok(new BaseResponse(compensationService.compensationAmount(postFireInsuranceDto)));
     }
 }

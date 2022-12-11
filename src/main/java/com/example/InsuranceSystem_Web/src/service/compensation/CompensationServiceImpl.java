@@ -4,6 +4,7 @@ import com.example.InsuranceSystem_Web.src.dao.contract.ContractDao;
 import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDao;
 import com.example.InsuranceSystem_Web.src.dao.insurance.FireInsuranceDao;
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
+import com.example.InsuranceSystem_Web.src.dto.compensation.PostCarDisclaimerDto;
 import com.example.InsuranceSystem_Web.src.dto.compensation.PostCompensationAmountDto;
 import com.example.InsuranceSystem_Web.src.dto.insurance.PostFireInsuranceDto;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
@@ -12,6 +13,7 @@ import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.vo.compensation.GetCompensationVo;
+import com.example.InsuranceSystem_Web.src.vo.compensation.PostCarDisclaimerVo;
 import com.example.InsuranceSystem_Web.src.vo.compensation.PostCompensationAmountVo;
 import com.example.InsuranceSystem_Web.src.vo.contract.PostContractManageVo;
 import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceVo;
@@ -28,10 +30,8 @@ import java.util.Optional;
 @Slf4j
 public class CompensationServiceImpl implements CompensationService {
 
-    private final CustomerDao customerDao;
     private final ContractDao contractDao;
-    private final InsuranceDao insuranceDao;
-    private final FireInsuranceDao fireInsuranceDao;
+
 
     @Override
     public List<GetCompensationVo> compensation(Long customerId) {
@@ -67,5 +67,26 @@ public class CompensationServiceImpl implements CompensationService {
 
         return PostCompensationAmountVo.of(postFireInsuranceDto);
 
+    }
+
+    @Override
+    public PostCarDisclaimerVo carDisclaimer(PostCarDisclaimerDto postCarDisclaimerDto) {
+        if (Indemnification.AccidentSubjectIndemnification.values()[postCarDisclaimerDto.getSubject()-1].isJudgment()
+                && Indemnification.CarAccidentCauseIndemnification.values()[postCarDisclaimerDto.getCarCause()-1].isJudgment()) {
+            return PostCarDisclaimerVo.builder()
+                    .message("면부책에 통과 되셨습니다.")
+                    .build();
+        } else {
+            //에러 처리로 변경해야됨.
+            if (Indemnification.AccidentSubjectIndemnification.values()[postCarDisclaimerDto.getSubject()-1].isJudgment() == false) {
+                return PostCarDisclaimerVo.builder()
+                        .message(Indemnification.AccidentSubjectIndemnification.values()[postCarDisclaimerDto.getSubject()-1].getExplanation() + "로 인해 발생한 사고는 보험지급금 의무 면책 사유입니다.")
+                        .build();
+            } else {
+                return PostCarDisclaimerVo.builder()
+                        .message(Indemnification.CarAccidentCauseIndemnification.values()[postCarDisclaimerDto.getCarCause()-1].getExplanation() + "로 인해 발생한 사고는 보험지급금 의무 면책 사유입니다.")
+                        .build();
+            }
+        }
     }
 }
