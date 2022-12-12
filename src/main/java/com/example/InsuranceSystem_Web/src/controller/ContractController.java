@@ -133,7 +133,8 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 체결한다. - 해상 보험")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionVo.class),
+            @ApiResponse(code=2004, message="예기치 못한 오류로 보험 계약에 실패하였습니다. 계약을 다시 시도해주세요.")
     })
     @PostMapping("/contract/conclusion/sea")
     public ResponseEntity<?> contractConclusionSea(PostSeaContractDto postContractDto){

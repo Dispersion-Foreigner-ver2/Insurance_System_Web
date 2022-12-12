@@ -142,22 +142,28 @@ public class ContractServiceImpl implements ContractService{
             saveHouse(customer, (PostFireContractDto) postContractDto);
         }
 
-        Contract contract = Contract.builder()
-                .insurancePrice(money)
-                .premiumRate(insurance.get().getPremium())
-                .compensationAmount(0)
-                .contractDate(LocalDate.now())
-                .underWrite(false)
-                .pay(false)
-                .customer(customer)
-                .insurance(insurance.get())
-                .build();
-        contractDao.save(contract);
+        try{
+            Contract contract = Contract.builder()
+                    .insurancePrice(money)
+                    .premiumRate(insurance.get().getPremium())
+                    .compensationAmount(0)
+                    .contractDate(LocalDate.now())
+                    .underWrite(false)
+                    .pay(false)
+                    .customer(customer)
+                    .insurance(insurance.get())
+                    .build();
+            contractDao.save(contract);
 
-      return PostContractConclusionVo.builder()
-              .message("계약서 작성이 완료되었습니다. 인수 심사 후 최종 가입 여부가 결정됩니다.")
-              .contractId(contract.getContractId())
-              .build();
+            return PostContractConclusionVo.builder()
+                    .message("계약서 작성이 완료되었습니다. 인수 심사 후 최종 가입 여부가 결정됩니다.")
+                    .contractId(contract.getContractId())
+                    .build();
+
+        }catch(Exception e){
+             throw new FailedContractSaveException();
+        }
+
     }
 
     private int getMoney(Insurance insurance) {
