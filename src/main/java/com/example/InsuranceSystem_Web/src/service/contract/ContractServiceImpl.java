@@ -3,7 +3,11 @@ package com.example.InsuranceSystem_Web.src.service.contract;
 import com.example.InsuranceSystem_Web.src.dao.contract.ContractDao;
 import com.example.InsuranceSystem_Web.src.dao.customer.*;
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
-import com.example.InsuranceSystem_Web.src.dto.contract.*;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostCarContractReq;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostContractReq;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostFireContractReq;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostSeaContractReq;
+import com.example.InsuranceSystem_Web.src.dto.res.contract.*;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
 import com.example.InsuranceSystem_Web.src.entity.customer.*;
 import com.example.InsuranceSystem_Web.src.entity.customer.enums.Disease;
@@ -16,7 +20,6 @@ import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.SeaInsurance;
 import com.example.InsuranceSystem_Web.src.exception.contract.*;
 import com.example.InsuranceSystem_Web.src.exception.insurance.EmptyInsuranceException;
-import com.example.InsuranceSystem_Web.src.vo.contract.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,9 +46,9 @@ public class ContractServiceImpl implements ContractService{
     private final ShipDao shipDao;
 
     @Override
-    public List<PostContractManageVo> contractManage( ) {
+    public List<PostContractManageRes> contractManage( ) {
         List<Insurance> insuranceList = insuranceDao.findAll();
-        List<PostContractManageVo> postContractManageVoList = new ArrayList<>();
+        List<PostContractManageRes> postContractManageVoList = new ArrayList<>();
 
         for (int i = 0; i < insuranceList.size(); i++) {
             List<Contract> contractList = contractDao.findByInsuranceId(insuranceList.get(i).getId());
@@ -57,7 +60,7 @@ public class ContractServiceImpl implements ContractService{
             } else {
                 type = "S";
             }
-            PostContractManageVo postContractManageVo = PostContractManageVo.builder()
+            PostContractManageRes postContractManageVo = PostContractManageRes.builder()
                     .insuranceId(insuranceList.get(i).getId())
                     .InsuranceName(insuranceList.get(i).getName())
                     .insuranceType(type)
@@ -77,9 +80,9 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public List<GetContractSearchVo> contractSearchAll(Long customerId) {
+    public List<GetContractSearchRes> contractSearchAll(Long customerId) {
 
-        List<GetContractSearchVo> getContractSearchVos = new ArrayList<>();
+        List<GetContractSearchRes> getContractSearchVos = new ArrayList<>();
 
         Optional<Customer> customer = customerDAO.findById(customerId);
         if(customer.isEmpty()){
@@ -89,7 +92,7 @@ public class ContractServiceImpl implements ContractService{
         List<Contract> contractList = contractDao.findByCustomer(customer.get());
         if(contractList.size() !=0){
             for(int i=0; i<contractList.size(); i++){
-                GetContractSearchVo getContractSearchVo = GetContractSearchVo.of(contractList.get(i));
+                GetContractSearchRes getContractSearchVo = GetContractSearchRes.of(contractList.get(i));
                 getContractSearchVos.add(getContractSearchVo);
             }
         }
@@ -98,16 +101,16 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public GetContractSearchVo contractSearch(Long contractId) {
+    public GetContractSearchRes contractSearch(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract.isEmpty()){
             throw new NotFoundContractException();
         }
-        return GetContractSearchVo.of(contract.get());
+        return GetContractSearchRes.of(contract.get());
     }
 
     @Override
-    public DeleteContractTerminateVo contractTerminate(Long contractId) {
+    public DeleteContractTerminateRes contractTerminate(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract.isEmpty()){
             throw new NotFoundContractException();
@@ -116,7 +119,7 @@ public class ContractServiceImpl implements ContractService{
         String name = contract.get().getInsurance().getName();
         contractDao.delete(contract.get());
 
-        return DeleteContractTerminateVo.builder()
+        return DeleteContractTerminateRes.builder()
                 .message(name+"보험 계약 해지가 완료되었습니다.")
                 .localDate(LocalDate.now())
                 .build();
@@ -124,7 +127,7 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     @Transactional
-    public PostContractConclusionVo contractConclusion(PostContractDto postContractDto) {
+    public PostContractConclusionRes contractConclusion(PostContractReq postContractDto) {
         Optional<Insurance> insurance = insuranceDao.findById(postContractDto.getInsuranceId());
         if(insurance.isEmpty()){
             throw new EmptyInsuranceException();
@@ -134,12 +137,12 @@ public class ContractServiceImpl implements ContractService{
         Customer customer = saveCustomer(postContractDto);
         saveMedicalHistory(customer,postContractDto);
 
-        if(postContractDto instanceof PostCarContractDto){
-            saveCar(customer, (PostCarContractDto) postContractDto);
-        }else if(postContractDto instanceof PostSeaContractDto){
-            saveShip(customer, (PostSeaContractDto) postContractDto);
-        }else if(postContractDto instanceof PostFireContractDto){
-            saveHouse(customer, (PostFireContractDto) postContractDto);
+        if(postContractDto instanceof PostCarContractReq){
+            saveCar(customer, (PostCarContractReq) postContractDto);
+        }else if(postContractDto instanceof PostSeaContractReq){
+            saveShip(customer, (PostSeaContractReq) postContractDto);
+        }else if(postContractDto instanceof PostFireContractReq){
+            saveHouse(customer, (PostFireContractReq) postContractDto);
         }
 
         try{
@@ -155,7 +158,7 @@ public class ContractServiceImpl implements ContractService{
                     .build();
             contractDao.save(contract);
 
-            return PostContractConclusionVo.builder()
+            return PostContractConclusionRes.builder()
                     .message("계약서 작성이 완료되었습니다. 인수 심사 후 최종 가입 여부가 결정됩니다.")
                     .contractId(contract.getContractId())
                     .build();
@@ -180,7 +183,7 @@ public class ContractServiceImpl implements ContractService{
         return money;
     }
 
-    private Customer saveCustomer(PostContractDto postContractDto) {
+    private Customer saveCustomer(PostContractReq postContractDto) {
         boolean sex = false;
         if (postContractDto.getCustomerSex()== 1) {
             sex = true;
@@ -200,7 +203,7 @@ public class ContractServiceImpl implements ContractService{
         return customer;
     }
 
-    private void saveMedicalHistory(Customer customer, PostContractDto postContractDto) {
+    private void saveMedicalHistory(Customer customer, PostContractReq postContractDto) {
         boolean cureComplete = false;  // 치료 유무
         if(postContractDto.getCureComplete() == 1){
             cureComplete = true;
@@ -215,7 +218,7 @@ public class ContractServiceImpl implements ContractService{
         medicalHistoryDao.save(medicalHistory);
     }
 
-    private void saveHouse(Customer customer, PostFireContractDto postContractDto) {
+    private void saveHouse(Customer customer, PostFireContractReq postContractDto) {
         House house = House.builder()
                 .houseType(HouseType.values()[postContractDto.getHouseType()-1])
                 .price(postContractDto.getHousePrice())
@@ -224,7 +227,7 @@ public class ContractServiceImpl implements ContractService{
         houseDao.save(house);
     }
 
-    private void saveShip(Customer customer, PostSeaContractDto postSeaContractDto){
+    private void saveShip(Customer customer, PostSeaContractReq postSeaContractDto){
         Ship ship = Ship.builder()
                 .shipNum(postSeaContractDto.getShipNum())
                 .year(postSeaContractDto.getYear())
@@ -235,7 +238,7 @@ public class ContractServiceImpl implements ContractService{
         shipDao.save(ship);
     }
 
-    private void saveCar(Customer customer, PostCarContractDto postCarContractDto){
+    private void saveCar(Customer customer, PostCarContractReq postCarContractDto){
         Car car = Car.builder()
                 .carNum(postCarContractDto.getCarNum())
                 .year(postCarContractDto.getYear())
@@ -247,13 +250,13 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public List<GetUnderWriteVo> getUnderWriteAll() {
+    public List<GetUnderWriteRes> getUnderWriteAll() {
         List<Contract> contract = contractDao.findAll();
 
-        List<GetUnderWriteVo> arr = new ArrayList<>();
+        List<GetUnderWriteRes> arr = new ArrayList<>();
         if(contract.size()!=0){
             for(int i=0; i<contract.size(); i++){
-                GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get(i));
+                GetUnderWriteRes getUnderWriteDto = GetUnderWriteRes.of(contract.get(i));
                 arr.add(getUnderWriteDto);
             }
         }
@@ -261,25 +264,22 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public List<GetUnderWriteVo> getUnderWrites(Long customerId) {
-        List<GetUnderWriteVo> arr = new ArrayList<>();
+    public List<GetUnderWriteRes> getUnderWrites(Long customerId) {
+        List<GetUnderWriteRes> arr = new ArrayList<>();
 
         Optional<Customer> customer = customerDAO.findById(customerId);
         if(customer.isEmpty()){
             throw new NotFoundCustomerException();
         }
+
         List<Contract> contract = contractDao.findByCustomer(customer.get());
         if(contract.size() == 0){
-            GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.builder()
-                    .message("해당 고객이 계약을 한 보험이 없습니다.")
-                    .build();
-            arr.add(getUnderWriteDto);
-            return arr;
+            throw new EmptyCustomerContractException();
         }
 
         if(contract.size()!=0){
             for(int i=0; i<contract.size(); i++){
-                GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get(i));
+                GetUnderWriteRes getUnderWriteDto = GetUnderWriteRes.of(contract.get(i));
                 arr.add(getUnderWriteDto);
             }
         }
@@ -287,17 +287,17 @@ public class ContractServiceImpl implements ContractService{
     }
 
     @Override
-    public GetUnderWriteVo getUnderWrite(Long contractId) {
+    public GetUnderWriteRes getUnderWrite(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract.isEmpty()){
             throw new NotFoundContractException();
         }
-        GetUnderWriteVo getUnderWriteDto = GetUnderWriteVo.of(contract.get());
+        GetUnderWriteRes getUnderWriteDto = GetUnderWriteRes.of(contract.get());
         return getUnderWriteDto;
     }
 
     @Override
-    public UpdateUnderWriteVo updateUnderWrite(Long contractId) {
+    public UpdateUnderWriteRes updateUnderWrite(Long contractId) {
         Optional<Contract> contract = contractDao.findById(contractId);
         if(contract.isEmpty()){
             throw new NotFoundContractException();
@@ -310,7 +310,7 @@ public class ContractServiceImpl implements ContractService{
         contractDao.save(contract.get());
 
         MedicalHistory medicalHistory = medicalHistoryDao.findByCustomer(contract.get().getCustomer());
-        return UpdateUnderWriteVo.of(contract.get(),medicalHistory);
+        return UpdateUnderWriteRes.of(contract.get(),medicalHistory);
     }
 
 }

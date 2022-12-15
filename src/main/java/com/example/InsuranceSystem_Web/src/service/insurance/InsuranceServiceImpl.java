@@ -1,10 +1,15 @@
 package com.example.InsuranceSystem_Web.src.service.insurance;
 
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
-import com.example.InsuranceSystem_Web.src.dto.insurance.*;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostCarInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostFireInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostSeaInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.DeleteInsuranceRes;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.GetInsuranceCountRes;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.GetInsuranceRes;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.PostInsuranceRes;
 import com.example.InsuranceSystem_Web.src.entity.insurance.*;
 import com.example.InsuranceSystem_Web.src.exception.insurance.EmptyInsuranceException;
-import com.example.InsuranceSystem_Web.src.vo.insurance.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,26 +28,26 @@ public class InsuranceServiceImpl implements InsuranceService {
     private final InsuranceDao insuranceDao;
 
     @Override
-    public PostInsuranceVo createInsuranceCar(PostCarInsuranceDto postCarRequest) {
+    public PostInsuranceRes createInsuranceCar(PostCarInsuranceReq postCarRequest) {
         Insurance carInsurance = insuranceDao.save(postCarRequest.toEntity());
         return response(carInsurance, "자동차");
     }
 
     @Override
-    public PostInsuranceVo createInsuranceFire(PostFireInsuranceDto postFireRequest) {
+    public PostInsuranceRes createInsuranceFire(PostFireInsuranceReq postFireRequest) {
         Insurance fireInsurance = insuranceDao.save(postFireRequest.toEntity());
         return response(fireInsurance, "화재");
     }
 
     @Override
-    public PostInsuranceVo createInsuranceSea(PostSeaInsuranceDto postSeaRequest) {
+    public PostInsuranceRes createInsuranceSea(PostSeaInsuranceReq postSeaRequest) {
         Insurance seaInsurance = insuranceDao.save(postSeaRequest.toEntity());
         return response(seaInsurance, "해상");
     }
 
     //객체를 만들어서 컨트롤러로 보낸 것
-    public PostInsuranceVo response(Insurance insurance, String type) {
-        return PostInsuranceVo.builder()
+    public PostInsuranceRes response(Insurance insurance, String type) {
+        return PostInsuranceRes.builder()
                 .message(type + " 보험 생성이 완료되었습니다. 보험 관리 화면에서 인가를 받아야 해당 보험을 이용할 수 있습니다. ")
                 .name(insurance.getName())
                 .insuranceId(insurance.getId())
@@ -50,7 +55,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
     @Override
-    public PostInsuranceVo setAuthorize(Long insuranceId) {
+    public PostInsuranceRes setAuthorize(Long insuranceId) {
         Insurance insurance = insuranceDao.findById(insuranceId).get();
         if (insurance == null) {
             throw new EmptyInsuranceException();
@@ -61,7 +66,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 
         insuranceDao.save(insurance);
 
-        return PostInsuranceVo.builder()
+        return PostInsuranceRes.builder()
                 .message("보험 설계의 인가가 완료되었습니다.")
                 .name(insurance.getName())
                 .insuranceId(insurance.getId())
@@ -69,7 +74,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
     @Override
-    public GetInsuranceCountVo readInsuranceCount() {
+    public GetInsuranceCountRes readInsuranceCount() {
         List<Insurance> insuranceList = insuranceDao.findAll();
         System.out.println(insuranceList);
 
@@ -83,7 +88,7 @@ public class InsuranceServiceImpl implements InsuranceService {
             }
         }
 
-        return GetInsuranceCountVo.builder()
+        return GetInsuranceCountRes.builder()
                 .insuranceSum(insuranceList.size())
                 .authInsuranceSum(authCount)
                 .authNotInsuranceSum(authNotCount)
@@ -91,13 +96,13 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
     @Override
-    public DeleteInsuranceVo deleteInsurance(Long insuranceId) {
+    public DeleteInsuranceRes deleteInsurance(Long insuranceId) {
         Optional<Insurance> insurance = insuranceDao.findById(insuranceId);
         if (insurance.isEmpty()) {
             throw new EmptyInsuranceException();
         }
         insuranceDao.delete(insurance.get());
-        return DeleteInsuranceVo.builder()
+        return DeleteInsuranceRes.builder()
                 .message("해당 보험을 성공적으로 삭제 완료하였습니다.")
                 .build();
     }
@@ -108,9 +113,9 @@ public class InsuranceServiceImpl implements InsuranceService {
         if (insuranceList.isEmpty()) {
             throw new EmptyInsuranceException();
         }
-        List<GetInsuranceVo> insuranceVoList = new ArrayList<>();
+        List<GetInsuranceRes> insuranceVoList = new ArrayList<>();
         for (int i = 0; i < insuranceList.size(); i++) {
-            GetInsuranceVo getInsuranceVo = setType(insuranceList.get(i));
+            GetInsuranceRes getInsuranceVo = setType(insuranceList.get(i));
             insuranceVoList.add(getInsuranceVo);
         }
         return insuranceVoList;
@@ -126,7 +131,7 @@ public class InsuranceServiceImpl implements InsuranceService {
         return setType(insurance.get());
     }
 
-    public GetInsuranceVo setType(Insurance insurance) {
+    public GetInsuranceRes setType(Insurance insurance) {
         String type;
         if (insurance instanceof CarInsurance) {
             type = "C";
@@ -135,7 +140,7 @@ public class InsuranceServiceImpl implements InsuranceService {
         } else {
             type = "S";
         }
-        return GetInsuranceVo.builder()
+        return GetInsuranceRes.builder()
                 .insurance(insurance)
                 .insuranceType(type)
                 .build();

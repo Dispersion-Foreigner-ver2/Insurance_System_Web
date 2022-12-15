@@ -1,18 +1,22 @@
 package com.example.InsuranceSystem_Web.src.service.insurance;
 
-import com.example.InsuranceSystem_Web.src.vo.insurance.*;
-import com.example.InsuranceSystem_Web.src.dto.insurance.*;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostCarInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostFireInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.req.insurance.PostSeaInsuranceReq;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.DeleteInsuranceRes;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.GetInsuranceCountRes;
+import com.example.InsuranceSystem_Web.src.dto.res.insurance.PostInsuranceRes;
 
 public interface InsuranceService {
 
-    PostInsuranceVo createInsuranceCar(PostCarInsuranceDto postCarRequest);
-    PostInsuranceVo createInsuranceFire(PostFireInsuranceDto postFireRequest);
-    PostInsuranceVo createInsuranceSea(PostSeaInsuranceDto postSeaRequest);
+    PostInsuranceRes createInsuranceCar(PostCarInsuranceReq postCarRequest);
+    PostInsuranceRes createInsuranceFire(PostFireInsuranceReq postFireRequest);
+    PostInsuranceRes createInsuranceSea(PostSeaInsuranceReq postSeaRequest);
 
-    PostInsuranceVo setAuthorize(Long insuranceId);
-    GetInsuranceCountVo readInsuranceCount();
+    PostInsuranceRes setAuthorize(Long insuranceId);
+    GetInsuranceCountRes readInsuranceCount();
 
-    DeleteInsuranceVo deleteInsurance(Long insuranceId);
+    DeleteInsuranceRes deleteInsurance(Long insuranceId);
 
     Object readInsurance();
     Object readDetailInsurance(Long insuranceId);

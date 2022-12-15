@@ -1,13 +1,13 @@
 package com.example.InsuranceSystem_Web.src.service.staff;
 
 import com.example.InsuranceSystem_Web.src.dao.staff.StaffDao;
-import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffJoinDto;
-import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
+import com.example.InsuranceSystem_Web.src.dto.req.staff.PostStaffJoinReq;
+import com.example.InsuranceSystem_Web.src.dto.req.staff.PostStaffLoginReq;
+import com.example.InsuranceSystem_Web.src.dto.res.staff.*;
 import com.example.InsuranceSystem_Web.src.entity.staff.Department;
 import com.example.InsuranceSystem_Web.src.entity.staff.Position;
 import com.example.InsuranceSystem_Web.src.entity.staff.Staff;
 import com.example.InsuranceSystem_Web.src.exception.staff.*;
-import com.example.InsuranceSystem_Web.src.vo.staff.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +23,14 @@ public class StaffServiceImpl implements StaffService {
     private final StaffDao staffDAO;
 
     @Override
-    public PostStaffVo login(PostStaffLoginDto postStaffLoginDto) {
+    public PostStaffRes login(PostStaffLoginReq postStaffLoginDto) {
         if (!postStaffLoginDto.getStaffId().matches("^[0-9]+$")) {
             throw new WrongTypeInputException();
         }
         Long staffId = Long.parseLong(postStaffLoginDto.getStaffId());
         Staff loginStaff = staffDAO.findById(staffId).get();
         if (loginStaff.getPassword().equals(postStaffLoginDto.getPassword())) {
-            return PostStaffVo.builder()
+            return PostStaffRes.builder()
                     .staffId(staffId)
                     .staffName(loginStaff.getName())
                     .department(loginStaff.getDepartment().getLabel())
@@ -41,7 +41,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public PostStaffVo join(PostStaffJoinDto postStaffJoinDto) {
+    public PostStaffRes join(PostStaffJoinReq postStaffJoinDto) {
         if (!postStaffJoinDto.getId().matches("^[0-9]+$")) {
             throw new WrongTypeInputException();
         }
@@ -65,7 +65,7 @@ public class StaffServiceImpl implements StaffService {
                 .build();
 
         Staff joinStaff = staffDAO.save(createStaff);
-        return PostStaffVo.builder()
+        return PostStaffRes.builder()
                 .staffId(joinStaff.getId())
                 .staffName(joinStaff.getName())
                 .department(joinStaff.getDepartment().getLabel())
@@ -74,12 +74,12 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<GetStaffVo> getStaffList() {
+    public List<GetStaffRes> getStaffList() {
         List<Staff> getStaffList = staffDAO.findAll();
-        List<GetStaffVo> getStaffVoList = new ArrayList<>();
+        List<GetStaffRes> getStaffVoList = new ArrayList<>();
         if(getStaffList.size() != 0){
             for(int i=0; i<getStaffList.size(); i++){
-                GetStaffVo getStaffVo = GetStaffVo.builder()
+                GetStaffRes getStaffVo = GetStaffRes.builder()
                         .id(getStaffList.get(i).getId())
                         .Department(getStaffList.get(i).getDepartment().getLabel())
                         .name(getStaffList.get(i).getName())
@@ -97,7 +97,7 @@ public class StaffServiceImpl implements StaffService {
         if(staff == null){
             throw new NotFoundStaffException();
         }
-        return GetStaffDetailVo.builder()
+        return GetStaffDetailRes.builder()
                 .id(staff.getId())
                 .Department(staff.getDepartment().getLabel())
                 .name(staff.getName())
@@ -115,7 +115,7 @@ public class StaffServiceImpl implements StaffService {
             throw new NotFoundStaffException();
         }
         staffDAO.delete(staff);
-        return BasicMessageVo.builder()
+        return BasicMessageRes.builder()
                 .message("사원이 해고되었습니다.")
                 .build();
     }
@@ -127,7 +127,7 @@ public class StaffServiceImpl implements StaffService {
             throw new NotFoundStaffException();
         }
         calculateSalary(staff);
-        return GetSalaryVo.builder()
+        return GetSalaryRes.builder()
                 .position(staff.getPosition().getLabel())
                 .workDay(calculateWorkDate(staff))
                 .result(staff.getResult())
@@ -144,7 +144,7 @@ public class StaffServiceImpl implements StaffService {
         staff.setPosition(Position.values()[position-1]);
         staff.setBasicSalary(Position.values()[position-1].getSalary());
         staffDAO.save(staff);
-        return BasicMessageVo.builder()
+        return BasicMessageRes.builder()
                 .message("직책이 변경되었습니다. 직책에 따라 기본 월급이 변경됩니다.")
                 .build();
     }
@@ -157,7 +157,7 @@ public class StaffServiceImpl implements StaffService {
         }
         staff.setDepartment(Department.values()[department-1]);
         staffDAO.save(staff);
-        return BasicMessageVo.builder()
+        return BasicMessageRes.builder()
                 .message("성공적으로 부서가 이동되었습니다.")
                 .build();
     }

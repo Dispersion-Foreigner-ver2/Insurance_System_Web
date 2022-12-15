@@ -1,15 +1,14 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
 import com.example.InsuranceSystem_Web.config.BaseResponse;
-import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffJoinDto;
-import com.example.InsuranceSystem_Web.src.dto.staff.PostStaffLoginDto;
+import com.example.InsuranceSystem_Web.src.dto.req.staff.PostStaffJoinReq;
+import com.example.InsuranceSystem_Web.src.dto.req.staff.PostStaffLoginReq;
+import com.example.InsuranceSystem_Web.src.dto.res.staff.*;
 import com.example.InsuranceSystem_Web.src.service.staff.StaffService;
-import com.example.InsuranceSystem_Web.src.vo.staff.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,20 +25,20 @@ public class StaffController {
     //로그인
     @ApiOperation(value = "로그인 한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostStaffVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostStaffRes.class)
     })
     @PostMapping("/login")
-    private ResponseEntity<?> login(@Valid PostStaffLoginDto postStaffLoginDto){
+    private ResponseEntity<?> login(@Valid PostStaffLoginReq postStaffLoginDto){
         return ResponseEntity.ok(new BaseResponse(staffService.login(postStaffLoginDto)));
     }
 
     //회원 가입
     @ApiOperation(value = "회원가입 한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostStaffVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostStaffRes.class)
     })
     @PostMapping("/staffJoin")
-    private ResponseEntity<?> join(@Valid PostStaffJoinDto postStaffJoinDto)  {
+    private ResponseEntity<?> join(@Valid PostStaffJoinReq postStaffJoinDto)  {
         return ResponseEntity.ok(new BaseResponse(staffService.join(postStaffJoinDto)));
     }
 
@@ -49,7 +48,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원을 관리한다. - 전체보기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetStaffVo.class)
+            @ApiResponse(code = 200, message = "OK", response = GetStaffRes.class)
     })
     @GetMapping("/staff")
     private ResponseEntity<?> getStaffList()  {
@@ -62,7 +61,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원을 관리한다. - 상세보기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetStaffDetailVo.class)
+            @ApiResponse(code = 200, message = "OK", response = GetStaffDetailRes.class)
     })
     @GetMapping("/staff/detail")
     private ResponseEntity<?> getStaff(@RequestParam("id") @ApiParam(value = "스태프 아이디",example = "0", defaultValue = "123") long id)  {
@@ -75,7 +74,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원을 관리한다.- 해고하기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = BasicMessageVo.class)
+            @ApiResponse(code = 200, message = "OK", response = BasicMessageRes.class)
     })
     @DeleteMapping("/staff")
     private ResponseEntity<?> deleteStaff(@RequestParam("id") @ApiParam(value = "스태프 아이디",example = "0", defaultValue = "123") long id)  {
@@ -88,7 +87,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원을 관리한다.- 부서이동")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = BasicMessageVo.class)
+            @ApiResponse(code = 200, message = "OK", response = BasicMessageRes.class)
     })
     @PostMapping("/staff/department")
     private ResponseEntity<?> changeDepartment(@RequestParam("id")  @ApiParam(value = "스태프 아이디",example = "0", defaultValue = "123")long id,
@@ -102,7 +101,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원 월급을 관리한다.- 사원의 월급을 보여준다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetSalaryVo.class)
+            @ApiResponse(code = 200, message = "OK", response = GetSalaryRes.class)
     })
     @GetMapping("/staff/salary")
     private ResponseEntity<?> getSalary(@RequestParam("id")  @ApiParam(value = "스태프 아이디",example = "0", defaultValue = "123") long id)  {
@@ -115,7 +114,7 @@ public class StaffController {
      * */
     @ApiOperation(value = "사원 월급을 관리한다.- 직급 변경 (직급에 따라 월급 변경)")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = BasicMessageVo.class)
+            @ApiResponse(code = 200, message = "OK", response = BasicMessageRes.class)
     })
     @PostMapping("/staff/position")
     private ResponseEntity<?> changePosition(@RequestParam("id") @ApiParam(value = "스태프 아이디",example = "0", defaultValue = "123")long id,

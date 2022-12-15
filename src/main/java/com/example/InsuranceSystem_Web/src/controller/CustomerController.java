@@ -3,9 +3,8 @@ package com.example.InsuranceSystem_Web.src.controller;
 
 import com.example.InsuranceSystem_Web.config.BaseResponse;
 import com.example.InsuranceSystem_Web.src.service.customer.CustomerService;
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerCountVo;
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerVo;
-import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceVo;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerCountRes;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerRes;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class CustomerController {
      * */
     @ApiOperation(value = "보험 가입자를 관리한다 ")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetCustomerCountVo.class),
+            @ApiResponse(code = 200, message = "OK", response = GetCustomerCountRes.class),
     })
     @GetMapping("/manage")
     public ResponseEntity<?> readCustomerCount(){
@@ -41,7 +40,7 @@ public class CustomerController {
      * */
     @ApiOperation(value = "보험을 관리한다 - 상세화면을 볼 수 있다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetCustomerVo.class)
+            @ApiResponse(code = 200, message = "OK", response = GetCustomerRes.class)
     })
     @GetMapping("/detail")
     //@RequestParam("id") @ApiParam(value = "고객 아이디",example = "0") Long customerId

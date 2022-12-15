@@ -1,15 +1,15 @@
 package com.example.InsuranceSystem_Web.src.service.customer;
 
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerCountVo;
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerVo;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerCountRes;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerRes;
 
 import java.util.List;
 
 public interface CustomerService {
 
 
-    GetCustomerCountVo readCustomerCount();
+    GetCustomerCountRes readCustomerCount();
 
-   List<GetCustomerVo> readDetailCustomer();
+   List<GetCustomerRes> readDetailCustomer();
 
 }

@@ -1,27 +1,27 @@
 package com.example.InsuranceSystem_Web.src.service.contract;
 
-import com.example.InsuranceSystem_Web.src.dto.contract.*;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostContractReq;
+import com.example.InsuranceSystem_Web.src.dto.res.contract.*;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
-import com.example.InsuranceSystem_Web.src.vo.contract.*;
 
 import java.util.List;
 
 
 public interface ContractService {
 
-    List<PostContractManageVo> contractManage();
+    List<PostContractManageRes> contractManage();
     List<Contract> getContractList();
 
-    List<GetContractSearchVo> contractSearchAll(Long customerId);
-    GetContractSearchVo contractSearch(Long contractId);
+    List<GetContractSearchRes> contractSearchAll(Long customerId);
+    GetContractSearchRes contractSearch(Long contractId);
 
-    DeleteContractTerminateVo contractTerminate(Long contractId);
-    PostContractConclusionVo contractConclusion(PostContractDto insuranceId);
+    DeleteContractTerminateRes contractTerminate(Long contractId);
+    PostContractConclusionRes contractConclusion(PostContractReq insuranceId);
 
-    List<GetUnderWriteVo> getUnderWriteAll();
-    List<GetUnderWriteVo> getUnderWrites(Long customerId);
-    GetUnderWriteVo getUnderWrite(Long contractId);
+    List<GetUnderWriteRes> getUnderWriteAll();
+    List<GetUnderWriteRes> getUnderWrites(Long customerId);
+    GetUnderWriteRes getUnderWrite(Long contractId);
 
-    UpdateUnderWriteVo updateUnderWrite(Long contractId);
+    UpdateUnderWriteRes updateUnderWrite(Long contractId);
 
 }

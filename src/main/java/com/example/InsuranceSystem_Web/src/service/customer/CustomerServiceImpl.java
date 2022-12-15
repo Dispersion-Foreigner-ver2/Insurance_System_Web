@@ -4,19 +4,15 @@ import com.example.InsuranceSystem_Web.src.dao.customer.CustomerDao;
 import com.example.InsuranceSystem_Web.src.dao.customer.MedicalHistoryDao;
 import com.example.InsuranceSystem_Web.src.dao.insurance.InsuranceDao;
 import com.example.InsuranceSystem_Web.src.entity.customer.Customer;
-import com.example.InsuranceSystem_Web.src.entity.insurance.CarInsurance;
-import com.example.InsuranceSystem_Web.src.entity.insurance.FireInsurance;
 import com.example.InsuranceSystem_Web.src.entity.insurance.Insurance;
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerCountVo;
-import com.example.InsuranceSystem_Web.src.vo.customer.GetCustomerVo;
-import com.example.InsuranceSystem_Web.src.vo.insurance.GetInsuranceVo;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerCountRes;
+import com.example.InsuranceSystem_Web.src.dto.res.customer.GetCustomerRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public GetCustomerCountVo readCustomerCount() {
+    public GetCustomerCountRes readCustomerCount() {
         List<Customer> customerList = customerDAO.findAll();
 
         int ThisMonthCustomerCount = 0;
@@ -42,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
 
-        return GetCustomerCountVo.builder()
+        return GetCustomerCountRes.builder()
                 .TotalCustomerCount(customerList.size())
                 .ThisMonthCustomerCount(ThisMonthCustomerCount)
                 .ThisMonthNotPayCustomerCount(ThisMonthNotPayCustomerCount)
@@ -50,13 +46,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<GetCustomerVo> readDetailCustomer() {
+    public List<GetCustomerRes> readDetailCustomer() {
         List<Customer> customerList = customerDAO.findAll();
         List<Insurance> insuranceList = insuranceDao.findAll();
-        List<GetCustomerVo> getCustomerVoList = new ArrayList<>();
+        List<GetCustomerRes> getCustomerVoList = new ArrayList<>();
 
         for (int i = 0; i < customerList.size(); i++) {
-            GetCustomerVo getCustomerVo = GetCustomerVo.builder()
+            GetCustomerRes getCustomerVo = GetCustomerRes.builder()
                     .customerId(customerList.get(i).getId())
                     .ssn(customerList.get(i).getSSN())
                     .address(customerList.get(i).getAddress())

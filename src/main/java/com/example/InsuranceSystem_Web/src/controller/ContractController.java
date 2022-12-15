@@ -1,20 +1,18 @@
 package com.example.InsuranceSystem_Web.src.controller;
 
-import com.example.InsuranceSystem_Web.config.BaseException;
 import com.example.InsuranceSystem_Web.config.BaseResponse;
-import com.example.InsuranceSystem_Web.src.dto.contract.PostContractDto;
-import com.example.InsuranceSystem_Web.src.dto.contract.*;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostCarContractReq;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostFireContractReq;
+import com.example.InsuranceSystem_Web.src.dto.req.contract.PostSeaContractReq;
+import com.example.InsuranceSystem_Web.src.dto.res.contract.*;
 import com.example.InsuranceSystem_Web.src.entity.contract.Contract;
-import com.example.InsuranceSystem_Web.src.exception.contract.NotFoundContractException;
-import com.example.InsuranceSystem_Web.src.exception.contract.NotFoundCustomerException;
+import com.example.InsuranceSystem_Web.src.exception.contract.InputNumErrorException;
 import com.example.InsuranceSystem_Web.src.service.contract.ContractService;
-import com.example.InsuranceSystem_Web.src.vo.contract.*;
-import com.example.InsuranceSystem_Web.src.vo.insurance.PostInsuranceVo;
+import com.google.common.primitives.Doubles;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 관리한다. -  보험 id, 보험 이름, 보험 종류, 보험에 가입한 고객 수")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostContractManageVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostContractManageRes.class)
     })
     @GetMapping("/contract")
     public ResponseEntity<?> contractManage(){
@@ -58,7 +56,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 관리한다. -  모든 계약 보기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetContractSearchVo.class),
+            @ApiResponse(code = 200, message = "OK", response = GetContractSearchRes.class),
             @ApiResponse(code = 2001, message = "등록된 고객 정보가 없습니다. 다시 시도해주시거나 회원 가입 후 진행해주세요.")
     })
     @GetMapping("/contract/search/all")
@@ -73,7 +71,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 관리한다 . - 특정 계약 검색하기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetContractSearchVo.class),
+            @ApiResponse(code = 200, message = "OK", response = GetContractSearchRes.class),
             @ApiResponse(code = 2000, message = "존재하지 않는 계약입니다.")
     })
     @GetMapping("/contract/search")
@@ -89,7 +87,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 해지한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = DeleteContractTerminateVo.class),
+            @ApiResponse(code = 200, message = "OK", response = DeleteContractTerminateRes.class),
             @ApiResponse(code = 2000, message = "존재하지 않는 계약입니다.")
     })
     @DeleteMapping("/contract/terminate")
@@ -105,10 +103,10 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 체결한다. - 화재보험")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionRes.class)
     })
     @PostMapping("/contract/conclusion/fire")
-    public ResponseEntity<?> contractConclusionFire(PostFireContractDto postContractDto){
+    public ResponseEntity<?> contractConclusionFire(PostFireContractReq postContractDto){
         return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion(postContractDto)));
     }
 
@@ -119,10 +117,10 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 체결한다. - 자동차 보험")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionVo.class)
+            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionRes.class)
     })
     @PostMapping("/contract/conclusion/car")
-    public ResponseEntity<?> contractConclusionCar(PostCarContractDto postContractDto){
+    public ResponseEntity<?> contractConclusionCar(PostCarContractReq postContractDto){
         return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion(postContractDto)));
     }
 
@@ -133,11 +131,11 @@ public class ContractController {
      * */
     @ApiOperation(value = "보험 계약을 체결한다. - 해상 보험")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionVo.class),
+            @ApiResponse(code = 200, message = "OK", response = PostContractConclusionRes.class),
             @ApiResponse(code=2004, message="예기치 못한 오류로 보험 계약에 실패하였습니다. 계약을 다시 시도해주세요.")
     })
     @PostMapping("/contract/conclusion/sea")
-    public ResponseEntity<?> contractConclusionSea(PostSeaContractDto postContractDto){
+    public ResponseEntity<?> contractConclusionSea(PostSeaContractReq postContractDto){
         return ResponseEntity.ok(new BaseResponse(contractService.contractConclusion(postContractDto)));
     }
 
@@ -148,7 +146,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "인수 심사를 관리한다.-  전체 계약의 인수심사 보여주기")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteVo.class)
+            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteRes.class)
     })
     @GetMapping("/contract/under-write/all")
     public ResponseEntity<?> getUnderWriteAll(){
@@ -162,7 +160,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "인수 심사를 관리한다. - 고객 별 인수 심사 현황")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteVo.class),
+            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteRes.class),
             @ApiResponse(code = 2000, message = "존재하지 않는 계약입니다."),
             @ApiResponse(code = 2001, message = "등록된 고객 정보가 없습니다. 다시 시도해주시거나 회원 가입 후 진행해주세요.")
     })
@@ -178,7 +176,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "인수 심사를 수행한다 - 특정 계약의 인수심사 확인")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteVo.class),
+            @ApiResponse(code = 200, message = "OK", response = GetUnderWriteRes.class),
             @ApiResponse(code = 2000, message = "존재하지 않는 계약입니다.")
     })
     @GetMapping("/contract/under-write/{contractId}")
@@ -194,7 +192,7 @@ public class ContractController {
      * */
     @ApiOperation(value = "인수 심사를 수행한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = UpdateUnderWriteVo.class),
+            @ApiResponse(code = 200, message = "OK", response = UpdateUnderWriteRes.class),
             @ApiResponse(code = 2000, message = "존재하지 않는 계약입니다.")
     })
     @PostMapping("/contract/under-write/{contractId}")
